@@ -1,0 +1,103 @@
+{
+ "source": "user's runs of bench/genome/run_genome_ctcf.sh, 2026-11-01 to 11-02 (fiberstate 0.5.1, FiberHMM 3.0.2, fibertools-rs 0.13.1; molecules subsampled to 30%)",
+ "chromosomes": "chr1-chr22",
+ "windows": 155,
+ "molecules": 6753658,
+ "sites_with_molecules": 927250,
+ "bound": 39537,
+ "unbound": 881012,
+ "site_auroc": {
+  "fiberstate": 0.834,
+  "FiberHMM": 0.822,
+  "fibertools": 0.832
+ },
+ "false_call_rate_pct": {
+  "fiberstate": 0.71,
+  "FiberHMM": 2.93,
+  "fibertools": 1.92
+ },
+ "bound_footprinted_default_pct": {
+  "fiberstate": 18.6,
+  "FiberHMM": 21.6,
+  "fibertools": 20.8
+ },
+ "auroc_by_motif_score": {
+  "0.85-0.90": {
+   "fiberstate": 0.732,
+   "FiberHMM": 0.724,
+   "fibertools": 0.733,
+   "n_bound": 15761
+  },
+  "0.90-0.95": {
+   "fiberstate": 0.872,
+   "FiberHMM": 0.857,
+   "fibertools": 0.867,
+   "n_bound": 16453
+  },
+  "0.95-1.01": {
+   "fiberstate": 0.915,
+   "FiberHMM": 0.906,
+   "fibertools": 0.909,
+   "n_bound": 7323
+  }
+ },
+ "matched_false_calls_pct": {
+  "0.5": {
+   "fiberstate": 15.2,
+   "FiberHMM": 3.4,
+   "fibertools": 5.4
+  },
+  "1": {
+   "fiberstate": 19.0,
+   "FiberHMM": 6.8,
+   "fibertools": 10.9
+  },
+  "2": {
+   "fiberstate": 21.6,
+   "FiberHMM": 14.6,
+   "fibertools": 20.9
+  }
+ },
+ "fiberstate_minus_pct_points_ci95": {
+  "0.5": {
+   "FiberHMM": [
+    11.8,
+    11.6,
+    12.0
+   ],
+   "fibertools": [
+    9.8,
+    9.6,
+    9.9
+   ]
+  },
+  "1": {
+   "FiberHMM": [
+    12.2,
+    11.9,
+    12.4
+   ],
+   "fibertools": [
+    8.1,
+    7.9,
+    8.2
+   ]
+  },
+  "2": {
+   "FiberHMM": [
+    7.0,
+    6.2,
+    7.8
+   ],
+   "fibertools": [
+    0.7,
+    0.6,
+    0.8
+   ]
+  }
+ },
+ "chromosomes_led_at_1pct": {
+  "FiberHMM": "22/22",
+  "fibertools": "22/22"
+ }
+}

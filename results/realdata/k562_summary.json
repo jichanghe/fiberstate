@@ -1,0 +1,12 @@
+{
+ "source": "user's run of bench/ctcf_chip/run_cell_line_test.sh, K562, 2026-10-31 (values from the printed summary)",
+ "ctcf_chip": {"peaks": "ENCFF660GHM (ENCSR000EGM)", "sites_selected": {"bound": 250, "unbound": 238}, "molecules": 14976,
+   "auroc": {"raw": 0.649, "fiberstate": 0.822, "FiberHMM": 0.883, "fibertools_footprint": 0.874},
+   "unbound_rate": {"raw": 0.103, "fiberstate": 0.008, "FiberHMM": 0.031, "fibertools_footprint": 0.033},
+   "paired": {"fiberstate vs FiberHMM": {"diff": -0.061, "p": 1.54e-05}, "fiberstate vs fibertools_footprint": {"diff": -0.052, "p": 0.000382}, "FiberHMM vs fibertools_footprint": {"diff": 0.009, "p": 0.402}}},
+ "dnase": {"peaks": "ENCFF185XRG (ENCSR000EOT)", "region": "chr19:45000000-45500000", "molecules": 1208,
+   "auroc_all": {"fiberstate": 0.878, "fibertools": 0.886, "FiberHMM": 0.906, "FIRE": 0.951},
+   "auroc_long": {"fiberstate": 0.919, "fibertools": 0.921, "FiberHMM": 0.910}},
+ "enzyme_table_r_log_weights_gm12878_vs_k562": 0.986,
+ "seconds_8_threads": {"fiberstate_ctcf_sites": 150, "fiberhmm_ctcf_sites": 33, "fibertools_ctcf_sites": 15}
+}

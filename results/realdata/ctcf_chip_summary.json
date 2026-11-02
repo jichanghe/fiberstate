@@ -1,0 +1,76 @@
+{
+ "source": "user's run of bench/ctcf_chip/run_ctcf_chip_test.sh (GM12878 chr19, ENCODE ENCFF797SDL, JASPAR MA0139.2), 2026-10-30",
+ "sites_selected": {
+  "bound": 250,
+  "unbound": 240,
+  "scored_with_10plus_fibers": 462
+ },
+ "molecules": 44614,
+ "raw_rule": {
+  "auroc": 0.525,
+  "ci95": [
+   0.473,
+   0.575
+  ],
+  "ratio": 1.24
+ },
+ "fiberstate": {
+  "auroc": 0.877,
+  "ci95": [
+   0.846,
+   0.907
+  ],
+  "ratio": 18.74,
+  "vs_raw": 0.352,
+  "seconds": 3248,
+  "threads": 4
+ },
+ "FiberHMM": {
+  "auroc": 0.862,
+  "ci95": [
+   0.827,
+   0.895
+  ],
+  "ratio": 6.42,
+  "vs_raw": 0.337,
+  "seconds": 86,
+  "threads": 4,
+  "reads_per_second": 610.0
+ },
+ "fibertools_footprint": {
+  "auroc": 0.873,
+  "ci95": [
+   0.84,
+   0.903
+  ],
+  "ratio": 8.19,
+  "vs_raw": 0.348,
+  "seconds": 78,
+  "threads": 4
+ },
+ "unbound_false_footprint_rate": {
+  "raw": 0.119,
+  "fiberstate": 0.008,
+  "FiberHMM": 0.037,
+  "fibertools_footprint": 0.029
+ },
+ "paired_delong_p": {
+  "fiberstate vs FiberHMM": 0.218,
+  "fiberstate vs fibertools_footprint": 0.752,
+  "FiberHMM vs fibertools_footprint": 0.384
+ },
+ "speed_check_2000_fibers": {
+  "machine": "Intel Core Ultra 7 255U, 14 logical CPUs, WSL",
+  "fiberstate_1_thread_ms": 75.4,
+  "fiberstate_4_threads_wall_ms": 76.8,
+  "fiberstate_4_threads_worker_cpu_ms": 303.9,
+  "fiberhmm_4_cores_ms": 36.1
+ },
+ "speed_check_v011": {
+  "fiberstate_1_thread_ms": 128.5,
+  "fiberstate_4_threads_wall_ms": 47.1,
+  "fiberstate_4_threads_worker_cpu_ms": 186.4,
+  "fiberhmm_4_cores_s_for_2000": 44.2,
+  "note": "machine busier/throttled than first check (1-thread time rose 75->128 ms)"
+ }
+}

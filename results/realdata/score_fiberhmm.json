@@ -1,0 +1,18 @@
+{
+ "label": "FiberHMM",
+ "MA_frame": "molecular",
+ "n_fibers": 3125,
+ "m6a_per_AT_inside_nucleosomes": 0.01570384244478952,
+ "nuc_len_mode": 132.0,
+ "nuc_len_median": 139.0,
+ "n_nucleosomes": 212386,
+ "repeat_mode": 182.0,
+ "repeat_median": 191.0,
+ "back_to_back": 0.07061994351551412,
+ "fire_auroc": 0.8647004576057765,
+ "n_footprints": 149721,
+ "footprint_frac_in_peaks": 0.12870605993815162,
+ "footprint_enrichment": 1.3309386620156973,
+ "nuc_occ_gc_rich_in_peaks": 0.4766257247050568,
+ "nuc_occ_normal_outside": 0.7433044317413742
+}

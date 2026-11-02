@@ -1,0 +1,56 @@
+{
+ "both_open": {
+  "n": 1168,
+  "m6a_in_motif_dist": {
+   "0": 0,
+   "1": 11,
+   "2": 46,
+   "3": 70,
+   "4+": 1041
+  },
+  "median_flank_m6a_rate": 0.5473944294699011,
+  "fs_state": {
+   "linker": 1168,
+   "nucleosome": 0,
+   "footprint": 0
+  },
+  "median_seg_len": 0.0,
+  "median_seg_conf": 0.8449634637735838
+ },
+ "fs_only": {
+  "n": 638,
+  "m6a_in_motif_dist": {
+   "0": 0,
+   "1": 152,
+   "2": 161,
+   "3": 145,
+   "4+": 180
+  },
+  "median_flank_m6a_rate": 0.4439203354297694,
+  "fs_state": {
+   "linker": 0,
+   "nucleosome": 118,
+   "footprint": 520
+  },
+  "median_seg_len": 31.0,
+  "median_seg_conf": 0.9009735791061568
+ },
+ "both_protected": {
+  "n": 259,
+  "m6a_in_motif_dist": {
+   "0": 250,
+   "1": 9,
+   "2": 0,
+   "3": 0,
+   "4+": 0
+  },
+  "median_flank_m6a_rate": 0.3106060606060606,
+  "fs_state": {
+   "linker": 0,
+   "nucleosome": 155,
+   "footprint": 104
+  },
+  "median_seg_len": 103.0,
+  "median_seg_conf": 0.954013318769086
+ }
+}

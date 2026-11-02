@@ -1,0 +1,22 @@
+{
+ "label": "fiberstate",
+ "MA_frame": "seq",
+ "n_fibers": 3125,
+ "m6a_per_AT_inside_nucleosomes": 0.011277881571482644,
+ "nuc_len_mode": 148.0,
+ "nuc_len_median": 140.0,
+ "n_nucleosomes": 230776,
+ "repeat_mode": 186.0,
+ "repeat_median": 186.0,
+ "back_to_back": 0.07093753157245081,
+ "fire_auroc": 0.8471772446058141,
+ "n_footprints": 10006,
+ "footprint_frac_in_peaks": 0.2121726963821707,
+ "footprint_enrichment": 2.426510676369251,
+ "nuc_occ_gc_rich_in_peaks": 0.4815167185799072,
+ "nuc_occ_normal_outside": 0.7393102574521468,
+ "dnase_auroc": 0.8363058129738837,
+ "dnase_bins_positive": 250,
+ "dnase_auroc_raw_m6a": 0.8128820556023589,
+ "dnase_auroc_long_patches": 0.9154043807919123
+}

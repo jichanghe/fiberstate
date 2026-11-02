@@ -1,0 +1,215 @@
+{
+ "raw: motif unmarked": {
+  "n_sites": 462,
+  "n_bound": 250,
+  "n_unbound": 212,
+  "median_fibers_per_site": 100.0,
+  "auroc_site": 0.5249433962264151,
+  "auroc_site_open": 0.4246320754716981,
+  "rate_bound": 0.1454358552631579,
+  "rate_unbound": 0.11696680790960452,
+  "ratio": 1.2433942403177756,
+  "spearman_chip": -0.013674553311623577,
+  "auroc_site_ci95": [
+   0.4727450699162643,
+   0.5754677118279125
+  ]
+ },
+ "fiberstate": {
+  "n_sites": 462,
+  "n_bound": 250,
+  "n_unbound": 212,
+  "median_fibers_per_site": 99.5,
+  "auroc_site": 0.8766981132075472,
+  "auroc_site_open": 0.841754716981132,
+  "rate_bound": 0.15027333634756876,
+  "rate_unbound": 0.008020801198713146,
+  "ratio": 18.73545206078397,
+  "spearman_chip": 0.6781784154624969,
+  "auroc_site_ci95": [
+   0.8456350889836881,
+   0.906972974654272
+  ],
+  "auroc_minus_raw": 0.35175471698113214,
+  "auroc_minus_raw_ci95": [
+   0.2950249909741389,
+   0.40856688148509396
+  ]
+ },
+ "FiberHMM": {
+  "n_sites": 462,
+  "n_bound": 250,
+  "n_unbound": 212,
+  "median_fibers_per_site": 99.5,
+  "auroc_site": 0.8619716981132075,
+  "auroc_site_open": 0.7815,
+  "rate_bound": 0.2381108964610136,
+  "rate_unbound": 0.03710722312811247,
+  "ratio": 6.41683414678962,
+  "spearman_chip": 0.7240120094774684,
+  "auroc_site_ci95": [
+   0.8271477948818416,
+   0.894661068557634
+  ],
+  "auroc_minus_raw": 0.33702830188679245,
+  "auroc_minus_raw_ci95": [
+   0.279453829002144,
+   0.3977508019951196
+  ]
+ },
+ "fibertools_footprint": {
+  "n_sites": 462,
+  "n_bound": 250,
+  "n_unbound": 212,
+  "median_fibers_per_site": 100.5,
+  "auroc_site": 0.8725,
+  "auroc_site_open": 0.8338490566037736,
+  "rate_bound": 0.24218845480099402,
+  "rate_unbound": 0.029558373414954087,
+  "ratio": 8.193565031507003,
+  "spearman_chip": 0.7284463012445753,
+  "auroc_site_ci95": [
+   0.8397625683872977,
+   0.9034813732182153
+  ],
+  "auroc_minus_raw": 0.347556603773585,
+  "auroc_minus_raw_ci95": [
+   0.28840916317503107,
+   0.4064027411829022
+  ]
+ },
+ "paired": {
+  "raw vs fiberstate": {
+   "n_sites": 462,
+   "auroc_diff": -0.35175471698113214,
+   "delong_se": 0.02907570022178853,
+   "delong_z": -12.097893233798608,
+   "delong_p": 1.0835638667091962e-33,
+   "bootstrap_ci95": [
+    -0.4121900535860993,
+    -0.2987703599885435
+   ],
+   "bootstrap_frac_A_better": 0.0,
+   "unbound_mean_occ": [
+    0.11933360248511415,
+    0.007603217845745691
+   ],
+   "unbound_wilcoxon_p": 4.357982319135243e-36,
+   "bound_mean_occ": [
+    0.1432883765523556,
+    0.14641965929895193
+   ],
+   "bound_wilcoxon_p": 0.10123749488405538
+  },
+  "raw vs FiberHMM": {
+   "n_sites": 462,
+   "auroc_diff": -0.33702830188679256,
+   "delong_se": 0.029102726219188052,
+   "delong_z": -11.580643660269276,
+   "delong_p": 5.165672670819982e-31,
+   "bootstrap_ci95": [
+    -0.3909846093555192,
+    -0.2809989189363063
+   ],
+   "bootstrap_frac_A_better": 0.0,
+   "unbound_mean_occ": [
+    0.11933360248511415,
+    0.036603740232422785
+   ],
+   "unbound_wilcoxon_p": 1.0817980726862691e-32,
+   "bound_mean_occ": [
+    0.1432883765523556,
+    0.23381806431455823
+   ],
+   "bound_wilcoxon_p": 4.418633995986991e-08
+  },
+  "raw vs fibertools_footprint": {
+   "n_sites": 462,
+   "auroc_diff": -0.347556603773585,
+   "delong_se": 0.029586729190208785,
+   "delong_z": -11.747043802618196,
+   "delong_p": 7.313273872117164e-32,
+   "bootstrap_ci95": [
+    -0.4091587490357827,
+    -0.2928432376387142
+   ],
+   "bootstrap_frac_A_better": 0.0,
+   "unbound_mean_occ": [
+    0.11933360248511415,
+    0.028584699740301762
+   ],
+   "unbound_wilcoxon_p": 2.961552578908359e-32,
+   "bound_mean_occ": [
+    0.1432883765523556,
+    0.23862860634140598
+   ],
+   "bound_wilcoxon_p": 2.7861242571814904e-07
+  },
+  "fiberstate vs FiberHMM": {
+   "n_sites": 462,
+   "auroc_diff": 0.014726415094339584,
+   "delong_se": 0.011950096985743818,
+   "delong_z": 1.2323259896474352,
+   "delong_p": 0.21782733513223634,
+   "bootstrap_ci95": [
+    -0.008326648928278413,
+    0.038563419724101336
+   ],
+   "bootstrap_frac_A_better": 0.89,
+   "unbound_mean_occ": [
+    0.007603217845745691,
+    0.036603740232422785
+   ],
+   "unbound_wilcoxon_p": 8.374396132522593e-33,
+   "bound_mean_occ": [
+    0.14641965929895193,
+    0.23381806431455823
+   ],
+   "bound_wilcoxon_p": 3.012807250191688e-38
+  },
+  "fiberstate vs fibertools_footprint": {
+   "n_sites": 462,
+   "auroc_diff": 0.0041981132075471495,
+   "delong_se": 0.013305400428493314,
+   "delong_z": 0.31551949376562566,
+   "delong_p": 0.7523672524964307,
+   "bootstrap_ci95": [
+    -0.0213209652164124,
+    0.03265180586533219
+   ],
+   "bootstrap_frac_A_better": 0.639,
+   "unbound_mean_occ": [
+    0.007603217845745691,
+    0.028584699740301762
+   ],
+   "unbound_wilcoxon_p": 4.786804813315587e-26,
+   "bound_mean_occ": [
+    0.14641965929895193,
+    0.23862860634140598
+   ],
+   "bound_wilcoxon_p": 4.638145057996236e-34
+  },
+  "FiberHMM vs fibertools_footprint": {
+   "n_sites": 462,
+   "auroc_diff": -0.010528301886792435,
+   "delong_se": 0.012097605737556062,
+   "delong_z": -0.8702797987628372,
+   "delong_p": 0.3841475159111329,
+   "bootstrap_ci95": [
+    -0.03550440803287009,
+    0.013199170293117176
+   ],
+   "bootstrap_frac_A_better": 0.1885,
+   "unbound_mean_occ": [
+    0.036603740232422785,
+    0.028584699740301762
+   ],
+   "unbound_wilcoxon_p": 1.1752064418660457e-08,
+   "bound_mean_occ": [
+    0.23381806431455823,
+    0.23862860634140598
+   ],
+   "bound_wilcoxon_p": 2.1026713886121036e-05
+  }
+ }
+}

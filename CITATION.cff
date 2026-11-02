@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use fiberstate, please cite it as below."
+title: "fiberstate: calibrated per-molecule nucleosome and transcription-factor footprint calling for Fiber-seq"
+authors:
+  - family-names: Ji
+    given-names: Changhe
+version: 0.5.1
+date-released: 2026-11-01
+license: MIT

@@ -1,0 +1,35 @@
+{
+ "fiberstate_all": {
+  "n": 10006,
+  "frac_in_peaks": 0.2121726963821707,
+  "enrichment_vs_bp": 2.070017916273202,
+  "median_len": 38.0
+ },
+ "fiberhmm_all": {
+  "n": 149721,
+  "frac_in_peaks": 0.12870605993815162,
+  "enrichment_vs_bp": 1.2556933787796016,
+  "median_len": 12.0
+ },
+ "fiberhmm_topN": {
+  "n": 10006,
+  "frac_in_peaks": 0.13611832900259843,
+  "enrichment_vs_bp": 1.3280096099689596,
+  "median_len": 68.0
+ },
+ "fiberhmm_len_ge15_topN": {
+  "n": 10006,
+  "frac_in_peaks": 0.13611832900259843,
+  "enrichment_vs_bp": 1.3280096099689596,
+  "median_len": 68.0
+ },
+ "fire_peak_bp_fraction": 0.102498,
+ "length_15_50": {
+  "n_fiberstate": 7239,
+  "n_fiberhmm": 43241,
+  "matched_n": 7239,
+  "fiberstate_enrichment": 2.25,
+  "fiberhmm_top_enrichment": 1.77,
+  "fiberhmm_all_enrichment": 1.39
+ }
+}

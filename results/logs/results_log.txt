@@ -1,0 +1,85 @@
+tuned {'gap_threshold': {'nuc_min': 75, 'foot_min': 20}, 'naive_hmm': {'p_access': 0.15, 'p_protect': 0.001}, '_scores': {'gap_threshold': 0.46468561892842236, 'naive_hmm': 0.43551678041229863}}
+sens=0.3 seed=1 57s
+sens=0.3 seed=2 94s
+sens=0.3 seed=3 144s
+sens=0.45 seed=1 177s
+sens=0.45 seed=2 211s
+sens=0.45 seed=3 245s
+sens=0.6 seed=1 278s
+sens=0.6 seed=2 315s
+sens=0.6 seed=3 351s
+sens=0.75 seed=1 385s
+sens=0.75 seed=2 417s
+sens=0.75 seed=3 451s
+sens=0.9 seed=1 486s
+sens=0.9 seed=2 520s
+sens=0.9 seed=3 555s
+fp=0.005 seed=1 588s
+fp=0.005 seed=2 623s
+fp=0.005 seed=3 660s
+fp=0.02 seed=1 696s
+fp=0.02 seed=2 728s
+fp=0.02 seed=3 757s
+fp=0.05 seed=1 789s
+fp=0.05 seed=2 825s
+fp=0.05 seed=3 858s
+fp=0.08 seed=1 890s
+fp=0.08 seed=2 923s
+fp=0.08 seed=3 955s
+cooccupancy {
+ "fiberstate|conditioned": {
+  "auroc": 0.9367418546365914,
+  "n_pairs": 200,
+  "n_coupled": 95,
+  "tp": 69,
+  "fp": 2,
+  "fdr": 0.028169014084507043,
+  "power": 0.7263157894736842
+ },
+ "fiberstate|unconditioned": {
+  "auroc": 0.8361904761904762,
+  "n_pairs": 200,
+  "n_coupled": 95,
+  "tp": 77,
+  "fp": 37,
+  "fdr": 0.32456140350877194,
+  "power": 0.8105263157894737
+ },
+ "gap_threshold|conditioned": {
+  "auroc": 0.9033583959899749,
+  "n_pairs": 200,
+  "n_coupled": 95,
+  "tp": 62,
+  "fp": 5,
+  "fdr": 0.07462686567164178,
+  "power": 0.6526315789473685
+ },
+ "gap_threshold|unconditioned": {
+  "auroc": 0.8218045112781955,
+  "n_pairs": 200,
+  "n_coupled": 95,
+  "tp": 75,
+  "fp": 27,
+  "fdr": 0.2647058823529412,
+  "power": 0.7894736842105263
+ },
+ "naive_hmm|conditioned": {
+  "auroc": 0.4763408521303258,
+  "n_pairs": 200,
+  "n_coupled": 95,
+  "tp": 78,
+  "fp": 85,
+  "fdr": 0.5214723926380368,
+  "power": 0.8210526315789474
+ },
+ "naive_hmm|unconditioned": {
+  "auroc": 0.5,
+  "n_pairs": 200,
+  "n_coupled": 95,
+  "tp": 95,
+  "fp": 105,
+  "fdr": 0.525,
+  "power": 1.0
+ }
+}
+done 1079s

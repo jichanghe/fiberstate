@@ -1,0 +1,29 @@
+{
+ "label": "FIRE pileup",
+ "dnase_auroc": 0.9511747368421053,
+ "dnase_bins_positive": 250,
+ "bins_scored": 5000,
+ "pileup_columns": [
+  "chrom",
+  "start",
+  "end",
+  "coverage",
+  "fire_coverage",
+  "score",
+  "nuc_coverage",
+  "msp_coverage",
+  "coverage_H1",
+  "fire_coverage_H1",
+  "score_H1",
+  "nuc_coverage_H1",
+  "msp_coverage_H1",
+  "coverage_H2",
+  "fire_coverage_H2",
+  "score_H2",
+  "nuc_coverage_H2",
+  "msp_coverage_H2",
+  "is_local_max",
+  "FDR",
+  "log_FDR"
+ ]
+}

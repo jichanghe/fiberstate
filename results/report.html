@@ -1,0 +1,2974 @@
+<title>fiberstate benchmark</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single reading column like a methods note; charts as full-width figures with numbered captions */
+:root {
+  --bg: #fbfbf9; --panel: #f2f3ef; --fg: #15171a; --fg2: #4c5057; --muted: #7a7e85; --rule: #dcded8;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --good: #1f7a3a; --bad: #b3261e;
+  --display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #161816; --panel: #1f2220; --fg: #eceee9; --fg2: #c1c5bd; --muted: #8c918a; --rule: #333833;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --good: #5cc27a; --bad: #f08a80; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #161816; --panel: #1f2220; --fg: #eceee9; --fg2: #c1c5bd; --muted: #8c918a; --rule: #333833;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --good: #5cc27a; --bad: #f08a80; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--body); }
+.wrap { max-width: 860px; margin: 0 auto; padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 40px; }
+.wrap > * { min-width: 0; }
+h1 { font: 600 2.1rem/1.15 var(--display); margin: 0; text-wrap: balance; }
+h2 { font: 600 1.35rem/1.3 var(--display); margin: 0 0 8px; text-wrap: balance; }
+p { margin: 0; max-width: 68ch; }
+.lede { color: var(--fg2); font-size: 1.05rem; margin-top: 12px; }
+.eyebrow { font: 500 .72rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+section { display: grid; gap: 14px; }
+code, .mono { font-family: var(--mono); font-size: .88em; }
+.findings { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.finding { background: var(--bg); padding: 16px; display: grid; gap: 4px; align-content: start; }
+.finding .num { font: 600 1.7rem/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.finding .vs { font: .82rem var(--mono); color: var(--muted); }
+.finding p { color: var(--fg2); font-size: .9rem; }
+figure { margin: 0; display: grid; gap: 10px; }
+figcaption { font-size: .88rem; color: var(--fg2); max-width: 70ch; }
+figcaption b { color: var(--fg); font-weight: 600; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.chart { position: relative; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .ttl { font: 600 .85rem var(--body); margin-bottom: 4px; }
+.axis text { fill: var(--muted); font: 11px var(--mono); }
+.axis line, .axis path { stroke: var(--rule); }
+.grid line { stroke: var(--rule); stroke-dasharray: 2 3; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .85rem; color: var(--fg2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.legend i.dash { background: none !important; border-top: 2px dashed currentColor; height: 0; }
+.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--rule); padding: 8px 10px; font: 12px/1.5 var(--mono); color: var(--fg); white-space: nowrap; z-index: 2; }
+.tbl { overflow-x: auto; border: 1px solid var(--rule); }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; font-variant-numeric: tabular-nums; }
+th, td { padding: 8px 12px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { font: 500 .72rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--panel); }
+tbody tr:last-child td { border-bottom: 0; }
+td.best { font-weight: 600; }
+td.na { color: var(--muted); }
+tr.ours td:first-child { font-weight: 600; }
+.note { border-left: 3px solid var(--rule); padding-left: 14px; color: var(--fg2); font-size: .92rem; display: grid; gap: 8px; }
+ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 68ch; }
+.pill { font: 500 .72rem var(--mono); padding: 2px 8px; border: 1px solid currentColor; border-radius: 999px; }
+.pill.good { color: var(--good); } .pill.bad { color: var(--bad); } .pill.mid { color: var(--muted); }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Fiber-seq · single-molecule chromatin · simulation benchmark</div>
+    <h1>fiberstate: sequence-aware nucleosome and footprint calling</h1>
+    <p class="lede">A new caller that labels every base of every Fiber-seq molecule as linker, nucleosome or TF footprint, benchmarked against fibertools-rs v0.13.1 and two classic baselines on simulated molecules with known ground truth, then compared with fibertools, FiberHMM 3.0.2 and HiddenFoot on real GM12878 and K562 Fiber-seq data at CTCF and REST sites labelled by ChIP-seq.</p>
+  </header>
+
+  <section>
+    <div class="eyebrow">Simulation headline (m6A sensitivity 0.6, false-positive rate 0.02); see the real-data section for how these held up</div>
+    <div class="findings" id="findings"></div>
+  </section>
+
+  <section>
+    <h2>What the tool does differently</h2>
+    <ul>
+      <li><b>G/C bases are treated as no evidence.</b> Hia5 only methylates A, so a GC-rich stretch is m6A-free whether or not it is wrapped. Gap-based callers read that silence as protection.</li>
+      <li><b>Methylation rate is learned per molecule.</b> A short EM re-estimates the accessible and protected m6A rates for each fiber, so poorly methylated fibers don't create long fake nucleosomes.</li>
+      <li><b>Nucleosomes and footprints are decoded jointly</b> with an explicit-duration hidden semi-Markov model (~147 bp nucleosomes plus hexasomes, 8–90 bp footprints), and each call carries a posterior confidence.</li>
+      <li><b>Co-occupancy is conditioned on accessibility.</b> Two sites inside the same open element look correlated just because they open together; fiberstate down-weights molecules where either site is nucleosome-bound.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Robustness to methylation efficiency</h2>
+    <figure>
+      <div class="legend" id="legend1"></div>
+      <div class="grid2">
+        <div class="chart" id="c_sens_nuc"></div>
+        <div class="chart" id="c_sens_island"></div>
+      </div>
+      <figcaption><b>Figure 1.</b> Nucleosome F1 and false nucleosomes inside GC-rich islands as per-fiber m6A sensitivity varies. Mean of 3 simulation seeds, 360 fibers × 12 kb each. Lower is better on the right.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Robustness to false-positive m6A calls</h2>
+    <figure>
+      <div class="grid2">
+        <div class="chart" id="c_fp_nuc"></div>
+        <div class="chart" id="c_sens_foot"></div>
+      </div>
+      <figcaption><b>Figure 2.</b> Left: nucleosome F1 as the m6A false-positive rate inside protected DNA rises; a single spurious call splits a gap-defined nucleosome. Right: TF footprint F1 across sensitivities (fibertools does not call footprints de novo, so it is absent).</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Full results at the default condition</h2>
+    <div class="tbl"><table id="tbl_main"></table></div>
+    <p style="color:var(--fg2);font-size:.88rem">Ablations: <span class="mono">−seq</span> treats G/C as unmethylated observations; <span class="mono">−EM</span> keeps global methylation rates. Occupancy error is the mean absolute difference between estimated and true per-site TF occupancy. Runtime is single-core wall time per 12 kb fiber.</p>
+  </section>
+
+  <section>
+    <h2>Detecting cooperative TF binding</h2>
+    <div class="tbl"><table id="tbl_co"></table></div>
+    <p style="color:var(--fg2);font-size:.88rem" id="co_note"></p>
+  </section>
+
+  <section>
+    <h2>TF binding at ChIP-seq-labelled motif sites</h2>
+    <p>Strong motif matches on chr19 (CTCF) or eight chromosomes (REST, NRF1), labelled bound (within 100 bp of an ENCODE IDR peak summit) or unbound (no peak within 2 kb), with unbound sites matched to the bound ones on motif score. Each tool's per-site share of footprinted molecules is scored by AUROC; p-values in brackets are paired DeLong tests of fiberstate against each tool. "Weak" and "strong ChIP" are the lowest and highest thirds of bound sites by ChIP signal, each scored against all unbound sites. fiberstate's footprint threshold was chosen on the CTCF sites; <b>REST and NRF1 were run afterwards with no retuning</b>. fibertools is told the motif positions; HiddenFoot is given the motif matrix.</p>
+    <div class="tbl"><table id="tbl_tf"></table></div>
+    <h3 style="margin-top:1.6rem">At a matched false-positive rate</h3>
+    <p>Site AUROC only ranks sites; it does not reward a caller for making fewer false calls. Here each tool's per-molecule score (fiberstate: mean footprint posterior over the motif; FiberHMM: quality of a footprint covering the motif; HiddenFoot: motif posterior; fibertools: its yes/no call) is cut so that exactly <b>1% of molecules at unbound sites</b> are called footprinted, and the table shows the share of molecules at bound sites called at that cut. Tied scores and yes/no calls are read off each tool's ROC curve. Brackets: fiberstate minus that tool, in percentage points, with a site bootstrap p-value.</p>
+    <div class="tbl"><table id="tbl_fpr"></table></div>
+  </section>
+
+  <section>
+    <h2>Real data: GM12878 Fiber-seq</h2>
+    <p>No ground truth exists on real data, so these checks are indirect. <b>GM12878 chr19:45.0–45.5 Mb</b>: 3,125 molecules (median 16.4 kb, ~97× coverage) streamed from the public FIRE data, compared with the 255 FIRE accessibility peaks for that region. Accessibility is also scored against ENCODE DNase-seq peaks.</p>
+    <p><b>Enzyme sequence preference.</b> In confidently open DNA, m6A calls at A-tracts (AAAAA, TTAAT, TAAAA) are 15–25× rarer than average, and A's flanked by G/C are marked about 1.4× more. Tables learned separately on the two datasets agree closely (r = 0.987 on log weights). fiberstate now uses this table by default. The GM12878 rows below are all computed by one shared scoring script from each tool's output BAM.</p>
+    <div class="tbl"><table id="tbl_real"></table></div>
+    <p style="color:var(--fg2);font-size:.88rem">FIRE peaks are built from fibertools output, which should favour fibertools on the accessibility check. Nucleosome sizes near 147 bp partly reflect fiberstate's built-in size prior.</p>
+  </section>
+
+  <section>
+    <h2>Where it loses, and what is not tested</h2>
+    <div class="note" id="caveats"></div>
+  </section>
+
+  <section>
+    <h2>Setup</h2>
+    <ul id="setup"></ul>
+  </section>
+</div>
+
+<script>
+const S = {
+ "tuned": {
+  "gap_threshold": {
+   "nuc_min": 75,
+   "foot_min": 20
+  },
+  "naive_hmm": {
+   "p_access": 0.15,
+   "p_protect": 0.001
+  },
+  "_scores": {
+   "gap_threshold": 0.46468561892842236,
+   "naive_hmm": 0.43551678041229863
+  }
+ },
+ "sensitivity": {
+  "fiberstate": [
+   {
+    "x": 0.3,
+    "nuc_precision": [
+     0.9848507796358593,
+     0.0007924493771022206
+    ],
+    "nuc_recall": [
+     0.9723688265878012,
+     0.0034848772278412076
+    ],
+    "nuc_f1": [
+     0.9785678123798406,
+     0.00208905381310858
+    ],
+    "foot_precision": [
+     0.9211384100039678,
+     0.018455821910221715
+    ],
+    "foot_recall": [
+     0.2167684361067523,
+     0.00857900128287399
+    ],
+    "foot_f1": [
+     0.3507665009677146,
+     0.010148860715383054
+    ],
+    "dyad_median_err": [
+     4.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.8964099537037038,
+     0.002453499824106054
+    ],
+    "false_nuc_per_10kb_island": [
+     1.420417897885977,
+     0.11118707113364738
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.4922722874616307,
+     0.08581284378795659
+    ],
+    "occupancy_mae": [
+     0.1350160348214816,
+     0.009468782369125352
+    ],
+    "ms_per_read": [
+     89.80802885648069,
+     22.50823692333797
+    ]
+   },
+   {
+    "x": 0.45,
+    "nuc_precision": [
+     0.9946365744940828,
+     0.00048570483547799424
+    ],
+    "nuc_recall": [
+     0.9946507844767113,
+     0.0007493888045620647
+    ],
+    "nuc_f1": [
+     0.9946433381949426,
+     0.00024378592541338977
+    ],
+    "foot_precision": [
+     0.9209814222212899,
+     0.011366348195497502
+    ],
+    "foot_recall": [
+     0.45809812095771735,
+     0.051519700873752024
+    ],
+    "foot_f1": [
+     0.6102824942555406,
+     0.047896307103273396
+    ],
+    "dyad_median_err": [
+     3.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9315047067901235,
+     0.0003152900333301957
+    ],
+    "false_nuc_per_10kb_island": [
+     0.5823779897722535,
+     0.052237085126539226
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.14484202785192954,
+     0.018609385793871964
+    ],
+    "occupancy_mae": [
+     0.08055587564359075,
+     0.012716925576549187
+    ],
+    "ms_per_read": [
+     78.88973878518597,
+     1.4791671226641838
+    ]
+   },
+   {
+    "x": 0.6,
+    "nuc_precision": [
+     0.997306857997888,
+     0.0001144462634385441
+    ],
+    "nuc_recall": [
+     0.9987643927748149,
+     0.00015465702735704287
+    ],
+    "nuc_f1": [
+     0.9980350928148914,
+     0.00013443690069656143
+    ],
+    "foot_precision": [
+     0.9336196809333156,
+     0.007450213292778405
+    ],
+    "foot_recall": [
+     0.6577330065522423,
+     0.046740990892911394
+    ],
+    "foot_f1": [
+     0.7706767936766007,
+     0.03157364411818699
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9460483024691357,
+     7.045720695381539e-05
+    ],
+    "false_nuc_per_10kb_island": [
+     0.33271483658737505,
+     0.030536304157938347
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.05611625472501145,
+     0.019073210569778093
+    ],
+    "occupancy_mae": [
+     0.044838744718982526,
+     0.008179533512565262
+    ],
+    "ms_per_read": [
+     83.20468773240758,
+     4.28899535675016
+    ]
+   },
+   {
+    "x": 0.75,
+    "nuc_precision": [
+     0.9981195073771013,
+     0.00039156774058900603
+    ],
+    "nuc_recall": [
+     0.9998341014684099,
+     4.304855729675492e-05
+    ],
+    "nuc_f1": [
+     0.998976031483914,
+     0.0002014624710647927
+    ],
+    "foot_precision": [
+     0.9135892193078212,
+     0.010717824188545918
+    ],
+    "foot_recall": [
+     0.7750403637846274,
+     0.01808810519149644
+    ],
+    "foot_f1": [
+     0.838435295533268,
+     0.00951883203498028
+    ],
+    "dyad_median_err": [
+     2.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9550187499999999,
+     0.0006017096520045882
+    ],
+    "false_nuc_per_10kb_island": [
+     0.3152361264513775,
+     0.10177737713602991
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.016083383124967883,
+     0.009558808090246932
+    ],
+    "occupancy_mae": [
+     0.02872549582908372,
+     0.0034263985185849855
+    ],
+    "ms_per_read": [
+     78.54584753889208,
+     3.093504830245925
+    ]
+   },
+   {
+    "x": 0.9,
+    "nuc_precision": [
+     0.9989003351066875,
+     0.0001196530858401277
+    ],
+    "nuc_recall": [
+     0.9999547645537182,
+     1.0038661529696642e-07
+    ],
+    "nuc_f1": [
+     0.9994272681330686,
+     5.991389986692904e-05
+    ],
+    "foot_precision": [
+     0.9147640667439796,
+     0.011297614154781236
+    ],
+    "foot_recall": [
+     0.8679914880858122,
+     0.009284688128973057
+    ],
+    "foot_f1": [
+     0.8907635676988835,
+     0.01024433600524667
+    ],
+    "dyad_median_err": [
+     2.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9586873456790124,
+     0.00039999403132931363
+    ],
+    "false_nuc_per_10kb_island": [
+     0.16115260539138218,
+     0.008103384349326108
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.014009478914187875,
+     0.008359117036782843
+    ],
+    "occupancy_mae": [
+     0.01982178654224664,
+     0.0017199001758518785
+    ],
+    "ms_per_read": [
+     81.38062099629485,
+     0.6400829125840978
+    ]
+   }
+  ],
+  "fiberstate_noseq": [
+   {
+    "x": 0.3,
+    "nuc_precision": [
+     0.9409654472674894,
+     0.003734357201526139
+    ],
+    "nuc_recall": [
+     0.9825995552286514,
+     0.0009231003570813649
+    ],
+    "nuc_f1": [
+     0.9613273702435386,
+     0.0018556160599128473
+    ],
+    "foot_precision": [
+     0.40862647655979045,
+     0.020875207530909597
+    ],
+    "foot_recall": [
+     0.14656471245879565,
+     0.01209247170731656
+    ],
+    "foot_f1": [
+     0.21569328884880223,
+     0.015947090840112484
+    ],
+    "dyad_median_err": [
+     5.333333333333333,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.8762256172839505,
+     0.001395704858824193
+    ],
+    "false_nuc_per_10kb_island": [
+     9.80566729759384,
+     0.9534087678197325
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.37144507837893653,
+     0.07324157222884417
+    ],
+    "occupancy_mae": [
+     0.15997916607418114,
+     0.01031712366628656
+    ],
+    "ms_per_read": [
+     84.96588120370295,
+     21.361938446231655
+    ]
+   },
+   {
+    "x": 0.45,
+    "nuc_precision": [
+     0.9537565287332436,
+     0.002872394839505357
+    ],
+    "nuc_recall": [
+     0.9960821043276905,
+     0.00037448154622241937
+    ],
+    "nuc_f1": [
+     0.9744575851194051,
+     0.0014783954990701695
+    ],
+    "foot_precision": [
+     0.3833517145007613,
+     0.008902630447975663
+    ],
+    "foot_recall": [
+     0.37249019977658876,
+     0.040165973631668815
+    ],
+    "foot_f1": [
+     0.37712725104371825,
+     0.025369503272008712
+    ],
+    "dyad_median_err": [
+     4.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9031347993827161,
+     0.001204968609685616
+    ],
+    "false_nuc_per_10kb_island": [
+     8.029991153943673,
+     0.6656894296741244
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.12846894088021119,
+     0.01403550880811247
+    ],
+    "occupancy_mae": [
+     0.10838790137613137,
+     0.011914738868913017
+    ],
+    "ms_per_read": [
+     74.35856529444375,
+     0.40513695272451733
+    ]
+   },
+   {
+    "x": 0.6,
+    "nuc_precision": [
+     0.9638199034687771,
+     0.002192134879397106
+    ],
+    "nuc_recall": [
+     0.9988848660213523,
+     0.00015475631396816238
+    ],
+    "nuc_f1": [
+     0.9810379533867574,
+     0.0011691572699378074
+    ],
+    "foot_precision": [
+     0.3350343680684606,
+     0.007730453857536824
+    ],
+    "foot_recall": [
+     0.5876931272379963,
+     0.02305650825076735
+    ],
+    "foot_f1": [
+     0.4265046113052766,
+     0.0072543338542943704
+    ],
+    "dyad_median_err": [
+     3.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9128356481481482,
+     0.0010619151507710505
+    ],
+    "false_nuc_per_10kb_island": [
+     6.336003288581487,
+     0.5615656220499037
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.05725367030759928,
+     0.02531907446818445
+    ],
+    "occupancy_mae": [
+     0.07739746318820771,
+     0.006675512158316104
+    ],
+    "ms_per_read": [
+     78.73001260925942,
+     4.412787777630704
+    ]
+   },
+   {
+    "x": 0.75,
+    "nuc_precision": [
+     0.9719451028064348,
+     0.0011569505103677003
+    ],
+    "nuc_recall": [
+     0.9994877265316592,
+     0.0001486984445160417
+    ],
+    "nuc_f1": [
+     0.9855237162449489,
+     0.0006416061215296615
+    ],
+    "foot_precision": [
+     0.2879570227340577,
+     0.025727903482705577
+    ],
+    "foot_recall": [
+     0.6655813524217237,
+     0.027079877098477607
+    ],
+    "foot_f1": [
+     0.40166238277821176,
+     0.028872770276332307
+    ],
+    "dyad_median_err": [
+     3.1666666666666665,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.9185618827160494,
+     0.002509537251790876
+    ],
+    "false_nuc_per_10kb_island": [
+     5.317325626771718,
+     0.19834360568040438
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.025416352899161915,
+     0.00647431214893825
+    ],
+    "occupancy_mae": [
+     0.07539918048960971,
+     0.005457857453888259
+    ],
+    "ms_per_read": [
+     74.18460115278044,
+     2.7578966738209476
+    ]
+   },
+   {
+    "x": 0.9,
+    "nuc_precision": [
+     0.978340075221675,
+     0.0015962392612183505
+    ],
+    "nuc_recall": [
+     0.9998491371662009,
+     0.00011895688735771573
+    ],
+    "nuc_f1": [
+     0.9889770531060574,
+     0.0008430076133843104
+    ],
+    "foot_precision": [
+     0.2710756620820567,
+     0.022676368345077115
+    ],
+    "foot_recall": [
+     0.7307336848405908,
+     0.0357655246258752
+    ],
+    "foot_f1": [
+     0.39520039130255413,
+     0.028479229497023643
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9190729166666666,
+     0.0011432478937029975
+    ],
+    "false_nuc_per_10kb_island": [
+     3.9007121024353553,
+     0.3034812177635615
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.017400667172991345,
+     0.013250359769672211
+    ],
+    "occupancy_mae": [
+     0.06890844699160588,
+     0.004777031710785452
+    ],
+    "ms_per_read": [
+     77.20847252592951,
+     0.8798659509308079
+    ]
+   }
+  ],
+  "fiberstate_noEM": [
+   {
+    "x": 0.3,
+    "nuc_precision": [
+     0.9137209311139308,
+     0.001891045285050003
+    ],
+    "nuc_recall": [
+     0.9930587406031091,
+     0.0005948590597335093
+    ],
+    "nuc_f1": [
+     0.9517386459438685,
+     0.0012543459773509652
+    ],
+    "foot_precision": [
+     0.18573512572577308,
+     0.007783933666516391
+    ],
+    "foot_recall": [
+     0.3320587012844706,
+     0.0167207431012086
+    ],
+    "foot_f1": [
+     0.2379249541277233,
+     0.006425076907285548
+    ],
+    "dyad_median_err": [
+     5.333333333333333,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.8655331790123456,
+     0.0017033026455841396
+    ],
+    "false_nuc_per_10kb_island": [
+     5.923646436134983,
+     0.5539075517711783
+    ],
+    "false_nuc_per_10kb_bg": [
+     4.330199382115382,
+     0.3867678222280339
+    ],
+    "occupancy_mae": [
+     0.13858908686998558,
+     0.008395817562216771
+    ],
+    "ms_per_read": [
+     24.046109750927542,
+     5.777926150245475
+    ]
+   },
+   {
+    "x": 0.45,
+    "nuc_precision": [
+     0.9744264096363068,
+     0.0011085693136066994
+    ],
+    "nuc_recall": [
+     0.9983426146135557,
+     5.667207757738651e-05
+    ],
+    "nuc_f1": [
+     0.9862392023899705,
+     0.0005510291039782802
+    ],
+    "foot_precision": [
+     0.43295459430297334,
+     0.012778712089548734
+    ],
+    "foot_recall": [
+     0.5466307660597055,
+     0.05993355402111174
+    ],
+    "foot_f1": [
+     0.4823232461632338,
+     0.031236265361667112
+    ],
+    "dyad_median_err": [
+     3.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9194174382716049,
+     0.00024375709553570802
+    ],
+    "false_nuc_per_10kb_island": [
+     2.119512146441885,
+     0.2218419733806999
+    ],
+    "false_nuc_per_10kb_bg": [
+     1.0148216625310855,
+     0.094438282326732
+    ],
+    "occupancy_mae": [
+     0.07908411591246262,
+     0.012138424566373074
+    ],
+    "ms_per_read": [
+     21.289793299999253,
+     0.24034084251032778
+    ]
+   },
+   {
+    "x": 0.6,
+    "nuc_precision": [
+     0.9941552054320698,
+     0.0002963371834302858
+    ],
+    "nuc_recall": [
+     0.9995330586229666,
+     0.00011798752617148683
+    ],
+    "nuc_f1": [
+     0.9968368367382862,
+     9.602971653889634e-05
+    ],
+    "foot_precision": [
+     0.7811821717703079,
+     0.019841192515816067
+    ],
+    "foot_recall": [
+     0.6455087918591568,
+     0.05749321653272409
+    ],
+    "foot_f1": [
+     0.7055149181521084,
+     0.036994566297103224
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9425928240740741,
+     0.0001795106676208129
+    ],
+    "false_nuc_per_10kb_island": [
+     0.6137491270428806,
+     0.07780890284836868
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.16928650584394048,
+     0.028324096423720843
+    ],
+    "occupancy_mae": [
+     0.051525910414199294,
+     0.008268280068548227
+    ],
+    "ms_per_read": [
+     22.657496800004157,
+     1.2385370160592304
+    ]
+   },
+   {
+    "x": 0.75,
+    "nuc_precision": [
+     0.9987202583579705,
+     0.00020089754970275772
+    ],
+    "nuc_recall": [
+     0.9996532195043417,
+     4.343205560067441e-05
+    ],
+    "nuc_f1": [
+     0.9991865103647376,
+     0.00010185465172912134
+    ],
+    "foot_precision": [
+     0.9516786146568067,
+     0.00885009925442911
+    ],
+    "foot_recall": [
+     0.6344211658579282,
+     0.03378448653894649
+    ],
+    "foot_f1": [
+     0.7608965975896457,
+     0.02631900956023161
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9496776234567901,
+     0.000634682834066771
+    ],
+    "false_nuc_per_10kb_island": [
+     0.219234615929479,
+     0.04778306494149492
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.008477213430616313,
+     0.003969987725588118
+    ],
+    "occupancy_mae": [
+     0.04979849845677307,
+     0.005659639645357071
+    ],
+    "ms_per_read": [
+     21.146716009258174,
+     0.7330600977022192
+    ]
+   },
+   {
+    "x": 0.9,
+    "nuc_precision": [
+     0.9996381138000356,
+     3.7025772648354604e-05
+    ],
+    "nuc_recall": [
+     0.9996382635546888,
+     7.309872376855607e-05
+    ],
+    "nuc_f1": [
+     0.9996381862894977,
+     3.114719068778422e-05
+    ],
+    "foot_precision": [
+     0.9913664805982881,
+     0.0004942935225310764
+    ],
+    "foot_recall": [
+     0.6310053463803257,
+     0.029209744267326813
+    ],
+    "foot_f1": [
+     0.7707710300143816,
+     0.021455267383244908
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9488237654320987,
+     0.00018650727265551542
+    ],
+    "false_nuc_per_10kb_island": [
+     0.0592668114387823,
+     0.011336317281229252
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.002173450004129555,
+     0.003073722472979876
+    ],
+    "occupancy_mae": [
+     0.05450445873124657,
+     0.0005203763930232892
+    ],
+    "ms_per_read": [
+     22.163434218518002,
+     0.40684712031318726
+    ]
+   }
+  ],
+  "gap_threshold": [
+   {
+    "x": 0.3,
+    "nuc_precision": [
+     0.9049270833679682,
+     0.0042193803980606764
+    ],
+    "nuc_recall": [
+     0.7455698826225103,
+     0.0033515233316929226
+    ],
+    "nuc_f1": [
+     0.8175524042325377,
+     0.0033881750254981004
+    ],
+    "foot_precision": [
+     0.02618585244560838,
+     0.001376459278540619
+    ],
+    "foot_recall": [
+     0.6819470780245341,
+     0.012373163862131288
+    ],
+    "foot_f1": [
+     0.0504307455037011,
+     0.0025630444834609926
+    ],
+    "dyad_median_err": [
+     13.166666666666666,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.6649574845679012,
+     0.003178346360256071
+    ],
+    "false_nuc_per_10kb_island": [
+     8.29774126128094,
+     0.2667403881090761
+    ],
+    "false_nuc_per_10kb_bg": [
+     2.2040149272441862,
+     0.11496263808470297
+    ],
+    "occupancy_mae": [
+     0.12422657152598882,
+     0.009747430133857567
+    ],
+    "ms_per_read": [
+     0.35616949166831513,
+     0.02503131829848275
+    ]
+   },
+   {
+    "x": 0.45,
+    "nuc_precision": [
+     0.9490488935836954,
+     0.002245694758789324
+    ],
+    "nuc_recall": [
+     0.7680268645612464,
+     0.0009432978598179657
+    ],
+    "nuc_f1": [
+     0.8489935198731801,
+     0.0006896989217165406
+    ],
+    "foot_precision": [
+     0.032150694868237836,
+     0.0014982635981403995
+    ],
+    "foot_recall": [
+     0.772591457026837,
+     0.0017880058118749872
+    ],
+    "foot_f1": [
+     0.061727237523657885,
+     0.0027614406417234907
+    ],
+    "dyad_median_err": [
+     11.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.6854089506172839,
+     0.0020190335197634523
+    ],
+    "false_nuc_per_10kb_island": [
+     4.923196464396738,
+     0.0846402095167992
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.9227877220664081,
+     0.08013384524275152
+    ],
+    "occupancy_mae": [
+     0.10629058702971746,
+     0.008077169197911642
+    ],
+    "ms_per_read": [
+     0.3554600620341725,
+     0.009563902200024716
+    ]
+   },
+   {
+    "x": 0.6,
+    "nuc_precision": [
+     0.9703835795388005,
+     0.0016481379014686548
+    ],
+    "nuc_recall": [
+     0.7734214937617,
+     0.0014618236361615376
+    ],
+    "nuc_f1": [
+     0.8607764080234536,
+     0.00026118115182229717
+    ],
+    "foot_precision": [
+     0.034402113436383164,
+     0.0021273696407555364
+    ],
+    "foot_recall": [
+     0.797340997190718,
+     0.01377960955027327
+    ],
+    "foot_f1": [
+     0.06595280715778973,
+     0.003954548724910749
+    ],
+    "dyad_median_err": [
+     9.333333333333334,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.6933437499999999,
+     0.001978817392110539
+    ],
+    "false_nuc_per_10kb_island": [
+     2.960763557464084,
+     0.12201615742458505
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.468038817361591,
+     0.04372110679807947
+    ],
+    "occupancy_mae": [
+     0.1017377641145757,
+     0.0030923781275267936
+    ],
+    "ms_per_read": [
+     0.4243591296264632,
+     0.010708593141166393
+    ]
+   },
+   {
+    "x": 0.75,
+    "nuc_precision": [
+     0.9814230257477298,
+     0.0007913291582420481
+    ],
+    "nuc_recall": [
+     0.7652946595904425,
+     0.0031499113456023883
+    ],
+    "nuc_f1": [
+     0.8599835566560482,
+     0.0019347882184272208
+    ],
+    "foot_precision": [
+     0.034860690675891814,
+     0.0032975953706980065
+    ],
+    "foot_recall": [
+     0.7753760067330067,
+     0.04053723001936574
+    ],
+    "foot_f1": [
+     0.06671652024484707,
+     0.006192068674142943
+    ],
+    "dyad_median_err": [
+     8.333333333333334,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.6909651234567901,
+     0.0034527232039025376
+    ],
+    "false_nuc_per_10kb_island": [
+     1.872497637061194,
+     0.08633828977447247
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.31214660636565,
+     0.028052198322707046
+    ],
+    "occupancy_mae": [
+     0.10448057171586582,
+     0.006891749131270705
+    ],
+    "ms_per_read": [
+     0.47879693240617965,
+     0.007455773184966762
+    ]
+   },
+   {
+    "x": 0.9,
+    "nuc_precision": [
+     0.9866770549568722,
+     0.0013192231518456203
+    ],
+    "nuc_recall": [
+     0.7683781195941988,
+     0.0014097119369281398
+    ],
+    "nuc_f1": [
+     0.8639511040308546,
+     0.001366021410324836
+    ],
+    "foot_precision": [
+     0.04052222859425223,
+     0.0012357438680217722
+    ],
+    "foot_recall": [
+     0.8105846617800262,
+     0.03127160747629428
+    ],
+    "foot_f1": [
+     0.07717997806518605,
+     0.0022951033018421235
+    ],
+    "dyad_median_err": [
+     7.666666666666667,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.6958425925925926,
+     0.0004762189030131859
+    ],
+    "false_nuc_per_10kb_island": [
+     1.2794285600957835,
+     0.18728942901715911
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.22938708329363544,
+     0.024583701695056328
+    ],
+    "occupancy_mae": [
+     0.09820987654320985,
+     0.011645908765613151
+    ],
+    "ms_per_read": [
+     0.524820071297393,
+     0.011288935878224502
+    ]
+   }
+  ],
+  "naive_hmm": [
+   {
+    "x": 0.3,
+    "nuc_precision": [
+     0.7929897042991964,
+     0.003603793112823721
+    ],
+    "nuc_recall": [
+     0.6296128232343386,
+     0.014637982190333625
+    ],
+    "nuc_f1": [
+     0.70185741107487,
+     0.010504733747907048
+    ],
+    "foot_precision": [
+     0.0,
+     0.0
+    ],
+    "foot_recall": [
+     0.0,
+     0.0
+    ],
+    "foot_f1": [
+     0.0,
+     0.0
+    ],
+    "dyad_median_err": [
+     5.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.8461921296296296,
+     0.0016322736402934659
+    ],
+    "false_nuc_per_10kb_island": [
+     14.640696419087027,
+     0.25204295614483574
+    ],
+    "false_nuc_per_10kb_bg": [
+     5.787772850625146,
+     0.01883475424161594
+    ],
+    "occupancy_mae": [
+     0.35859532046219633,
+     0.009396554256661449
+    ],
+    "ms_per_read": [
+     0.3906408333374724,
+     0.10317730481388385
+    ]
+   },
+   {
+    "x": 0.45,
+    "nuc_precision": [
+     0.8579816168500513,
+     0.0005497407346465674
+    ],
+    "nuc_recall": [
+     0.7564359238216104,
+     0.005720722078444524
+    ],
+    "nuc_f1": [
+     0.8040053443815492,
+     0.0034530462189695642
+    ],
+    "foot_precision": [
+     0.0,
+     0.0
+    ],
+    "foot_recall": [
+     0.0,
+     0.0
+    ],
+    "foot_f1": [
+     0.0,
+     0.0
+    ],
+    "dyad_median_err": [
+     5.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.8621560956790123,
+     0.000883341064177081
+    ],
+    "false_nuc_per_10kb_island": [
+     12.68088102474218,
+     0.37758053398625047
+    ],
+    "false_nuc_per_10kb_bg": [
+     3.7639219631662364,
+     0.15616118801403953
+    ],
+    "occupancy_mae": [
+     0.35487288342360807,
+     0.009534102857297643
+    ],
+    "ms_per_read": [
+     0.333294647221136,
+     0.015698410986298192
+    ]
+   },
+   {
+    "x": 0.6,
+    "nuc_precision": [
+     0.892894886446545,
+     0.0012453335102401803
+    ],
+    "nuc_recall": [
+     0.8296209665374157,
+     0.003176160909751826
+    ],
+    "nuc_f1": [
+     0.8600926185669472,
+     0.0018936693210767177
+    ],
+    "foot_precision": [
+     0.0,
+     0.0
+    ],
+    "foot_recall": [
+     0.0,
+     0.0
+    ],
+    "foot_f1": [
+     0.0,
+     0.0
+    ],
+    "dyad_median_err": [
+     4.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.8674852623456789,
+     0.0010896043786397618
+    ],
+    "false_nuc_per_10kb_island": [
+     9.522990947285386,
+     0.2012388319574902
+    ],
+    "false_nuc_per_10kb_bg": [
+     3.2269708538084507,
+     0.10886329377079587
+    ],
+    "occupancy_mae": [
+     0.35487288342360807,
+     0.009534102857297643
+    ],
+    "ms_per_read": [
+     0.33261425740660244,
+     0.005616735349124022
+    ]
+   },
+   {
+    "x": 0.75,
+    "nuc_precision": [
+     0.9164111422689404,
+     0.002814609038919793
+    ],
+    "nuc_recall": [
+     0.8793661848684752,
+     0.0070310670365285955
+    ],
+    "nuc_f1": [
+     0.8975007468508833,
+     0.004972343223731664
+    ],
+    "foot_precision": [
+     0.0,
+     0.0
+    ],
+    "foot_recall": [
+     0.0,
+     0.0
+    ],
+    "foot_f1": [
+     0.0,
+     0.0
+    ],
+    "dyad_median_err": [
+     4.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.866774537037037,
+     0.0007806879208024227
+    ],
+    "false_nuc_per_10kb_island": [
+     6.589529248428652,
+     0.24760512193089532
+    ],
+    "false_nuc_per_10kb_bg": [
+     3.1583277445177043,
+     0.09332718711627343
+    ],
+    "occupancy_mae": [
+     0.3643834422657952,
+     0.003710366939660791
+    ],
+    "ms_per_read": [
+     0.32854453148161156,
+     0.00529761644246184
+    ]
+   },
+   {
+    "x": 0.9,
+    "nuc_precision": [
+     0.9305437958321061,
+     0.0007362965960895774
+    ],
+    "nuc_recall": [
+     0.9024141910121574,
+     0.0021617402401663283
+    ],
+    "nuc_f1": [
+     0.9162624671728107,
+     0.001442131148813642
+    ],
+    "foot_precision": [
+     0.0,
+     0.0
+    ],
+    "foot_recall": [
+     0.0,
+     0.0
+    ],
+    "foot_f1": [
+     0.0,
+     0.0
+    ],
+    "dyad_median_err": [
+     4.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.8661747685185185,
+     0.0008519249624758941
+    ],
+    "false_nuc_per_10kb_island": [
+     4.142503771475447,
+     0.12508871019535509
+    ],
+    "false_nuc_per_10kb_bg": [
+     3.1654624627222723,
+     0.05686708165004504
+    ],
+    "occupancy_mae": [
+     0.3734399551066218,
+     0.00347455425094326
+    ],
+    "ms_per_read": [
+     0.33521089814556676,
+     0.0033637355304511007
+    ]
+   }
+  ],
+  "fibertools": [
+   {
+    "x": 0.3,
+    "nuc_precision": [
+     0.9182470891031403,
+     0.0023943309614404933
+    ],
+    "nuc_recall": [
+     0.8963440470987223,
+     0.005085659233409938
+    ],
+    "nuc_f1": [
+     0.907157928127039,
+     0.0033473363476318714
+    ],
+    "dyad_median_err": [
+     6.833333333333333,
+     0.23570226039551584
+    ],
+    "false_nuc_per_10kb_island": [
+     9.342795451845232,
+     0.17973378428162673
+    ],
+    "false_nuc_per_10kb_bg": [
+     1.8756896031740364,
+     0.14368971589368967
+    ],
+    "ms_per_read": [
+     0.5589362037036844,
+     0.010688164441093105
+    ]
+   },
+   {
+    "x": 0.45,
+    "nuc_precision": [
+     0.9595966595098044,
+     0.0009379154656930994
+    ],
+    "nuc_recall": [
+     0.9282808932459276,
+     0.0017341296971545368
+    ],
+    "nuc_f1": [
+     0.9436788580927379,
+     0.0013490506867541957
+    ],
+    "dyad_median_err": [
+     5.5,
+     0.0
+    ],
+    "false_nuc_per_10kb_island": [
+     5.340364349085324,
+     0.037501279376475495
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.5898475342263222,
+     0.03578197845033487
+    ],
+    "ms_per_read": [
+     0.6549504574074397,
+     0.01238523871779488
+    ]
+   },
+   {
+    "x": 0.6,
+    "nuc_precision": [
+     0.9786032310142253,
+     0.0008470776523637375
+    ],
+    "nuc_recall": [
+     0.9413289457026405,
+     0.0012252598352846316
+    ],
+    "nuc_f1": [
+     0.9596042097357826,
+     0.0010417911237490549
+    ],
+    "dyad_median_err": [
+     4.5,
+     0.0
+    ],
+    "false_nuc_per_10kb_island": [
+     2.987054677064654,
+     0.10418255648929706
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.236120278813807,
+     0.012086690033787638
+    ],
+    "ms_per_read": [
+     0.7056406101851406,
+     0.04214872194007535
+    ]
+   },
+   {
+    "x": 0.75,
+    "nuc_precision": [
+     0.9886009704197628,
+     0.0003740089578433608
+    ],
+    "nuc_recall": [
+     0.9464875534587192,
+     0.000979839690204264
+    ],
+    "nuc_f1": [
+     0.9670856920157194,
+     0.0005255480409325359
+    ],
+    "dyad_median_err": [
+     4.333333333333333,
+     0.23570226039551584
+    ],
+    "false_nuc_per_10kb_island": [
+     1.753403799730853,
+     0.011403107772132099
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.10613295170381742,
+     0.013696627438592289
+    ],
+    "ms_per_read": [
+     0.7487182250001836,
+     0.0240049658796381
+    ]
+   },
+   {
+    "x": 0.9,
+    "nuc_precision": [
+     0.9936983645598164,
+     0.0010420237360464365
+    ],
+    "nuc_recall": [
+     0.9485806837659269,
+     0.0009716158180457596
+    ],
+    "nuc_f1": [
+     0.970615181436343,
+     0.000838202654295382
+    ],
+    "dyad_median_err": [
+     4.0,
+     0.0
+    ],
+    "false_nuc_per_10kb_island": [
+     0.9172536487817521,
+     0.1555711233783899
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.061743708916267966,
+     0.005499725745185281
+    ],
+    "ms_per_read": [
+     0.8183417324074881,
+     0.06070919915545114
+    ]
+   }
+  ]
+ },
+ "fp_rate": {
+  "fiberstate": [
+   {
+    "x": 0.005,
+    "nuc_precision": [
+     0.9986391433045662,
+     0.0003182244387126456
+    ],
+    "nuc_recall": [
+     0.9999394405007247,
+     2.1478116254430714e-05
+    ],
+    "nuc_f1": [
+     0.9992888462015322,
+     0.00016813239129893613
+    ],
+    "foot_precision": [
+     0.9379783160710996,
+     0.011420361185628293
+    ],
+    "foot_recall": [
+     0.7145943875412474,
+     0.013806664976553022
+    ],
+    "foot_f1": [
+     0.8109915662884197,
+     0.004541957332817977
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9500115740740741,
+     0.0005792499582369196
+    ],
+    "false_nuc_per_10kb_island": [
+     0.1948540489236743,
+     0.05874444421939702
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.018521372073646045,
+     0.002699541393977339
+    ],
+    "occupancy_mae": [
+     0.03435046771163038,
+     0.005957260455137703
+    ],
+    "ms_per_read": [
+     82.51087614351879,
+     4.231340983224444
+    ]
+   },
+   {
+    "x": 0.02,
+    "nuc_precision": [
+     0.9980501731919523,
+     0.00046423631107936895
+    ],
+    "nuc_recall": [
+     0.9995914491159518,
+     0.00013359784156457825
+    ],
+    "nuc_f1": [
+     0.9988201746753572,
+     0.0002740015366000034
+    ],
+    "foot_precision": [
+     0.9324746944716932,
+     0.006725984860120697
+    ],
+    "foot_recall": [
+     0.6868109014416812,
+     0.013172504657450833
+    ],
+    "foot_f1": [
+     0.7908818897021909,
+     0.006749218089954995
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9499875771604939,
+     0.0006335912251239162
+    ],
+    "false_nuc_per_10kb_island": [
+     0.29114712545321786,
+     0.09164349960883236
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.021828792641140484,
+     0.003919253100526109
+    ],
+    "occupancy_mae": [
+     0.041076401618019856,
+     0.007202496583277165
+    ],
+    "ms_per_read": [
+     76.04639819166395,
+     7.2671166552007564
+    ]
+   },
+   {
+    "x": 0.05,
+    "nuc_precision": [
+     0.9966470273772611,
+     0.00032262263553407274
+    ],
+    "nuc_recall": [
+     0.9987597171355413,
+     0.0003703052939020667
+    ],
+    "nuc_f1": [
+     0.9977021858489653,
+     0.00022969800584663524
+    ],
+    "foot_precision": [
+     0.9304327200726012,
+     0.0046027602187172735
+    ],
+    "foot_recall": [
+     0.6289656487724121,
+     0.01408195063965738
+    ],
+    "foot_f1": [
+     0.7504693647223598,
+     0.010381613204366041
+    ],
+    "dyad_median_err": [
+     2.8333333333333335,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.9478442901234567,
+     0.0009332117351200985
+    ],
+    "false_nuc_per_10kb_island": [
+     0.50254342196405,
+     0.06863651433836122
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.0348573406972908,
+     0.004788338028954904
+    ],
+    "occupancy_mae": [
+     0.05473616147981114,
+     0.008078972316403917
+    ],
+    "ms_per_read": [
+     80.75539465555615,
+     4.2421403980311965
+    ]
+   },
+   {
+    "x": 0.08,
+    "nuc_precision": [
+     0.9951062494243496,
+     0.000440236875984736
+    ],
+    "nuc_recall": [
+     0.9971860948372445,
+     0.0005535302389819323
+    ],
+    "nuc_f1": [
+     0.9961449109253547,
+     0.00027399054026760604
+    ],
+    "foot_precision": [
+     0.9199962333496504,
+     0.007499294248636021
+    ],
+    "foot_recall": [
+     0.5674299986239255,
+     0.009955078014260394
+    ],
+    "foot_f1": [
+     0.7019042743669339,
+     0.009439540412095972
+    ],
+    "dyad_median_err": [
+     2.6666666666666665,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.9443434413580247,
+     0.001031467045534059
+    ],
+    "false_nuc_per_10kb_island": [
+     0.7244244467706631,
+     0.09627765703453674
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.054388356558804106,
+     0.015041410775166244
+    ],
+    "occupancy_mae": [
+     0.06852166856642956,
+     0.007394850431592275
+    ],
+    "ms_per_read": [
+     75.80957549352316,
+     0.6828141331095224
+    ]
+   }
+  ],
+  "fiberstate_noseq": [
+   {
+    "x": 0.005,
+    "nuc_precision": [
+     0.9799178464317881,
+     0.0006596095208718252
+    ],
+    "nuc_recall": [
+     0.9998487000295744,
+     2.104424373192633e-05
+    ],
+    "nuc_f1": [
+     0.9897828413473903,
+     0.00034386022194800097
+    ],
+    "foot_precision": [
+     0.27123056862566686,
+     0.01736859412194679
+    ],
+    "foot_recall": [
+     0.6711840622123576,
+     0.019906032653094936
+    ],
+    "foot_f1": [
+     0.3862427687286678,
+     0.020956156382488805
+    ],
+    "dyad_median_err": [
+     3.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9189466820987654,
+     0.0019414051821835566
+    ],
+    "false_nuc_per_10kb_island": [
+     3.5338936261931377,
+     0.2020619428304775
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.01308717884113532,
+     0.0025841754411300034
+    ],
+    "occupancy_mae": [
+     0.07557153370715398,
+     0.008794540084322936
+    ],
+    "ms_per_read": [
+     78.67494354073365,
+     3.9400764402004613
+    ]
+   },
+   {
+    "x": 0.02,
+    "nuc_precision": [
+     0.9647905282614335,
+     0.0017974443388891106
+    ],
+    "nuc_recall": [
+     0.9992436222017885,
+     0.0002252724954946135
+    ],
+    "nuc_f1": [
+     0.9817141393829982,
+     0.0009964752668139459
+    ],
+    "foot_precision": [
+     0.2995070710685715,
+     0.019688659581775972
+    ],
+    "foot_recall": [
+     0.6051707564474991,
+     0.02119945807546935
+    ],
+    "foot_f1": [
+     0.4006066259226267,
+     0.022154387555830234
+    ],
+    "dyad_median_err": [
+     3.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9126273148148148,
+     0.0025126767577108616
+    ],
+    "false_nuc_per_10kb_island": [
+     6.289082642887784,
+     0.27243128402459293
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.019586387819602227,
+     0.004336736527657254
+    ],
+    "occupancy_mae": [
+     0.0905370109385676,
+     0.010137478798005879
+    ],
+    "ms_per_read": [
+     72.38761997129767,
+     7.095912901220062
+    ]
+   },
+   {
+    "x": 0.05,
+    "nuc_precision": [
+     0.9455300198015969,
+     0.002738233750829397
+    ],
+    "nuc_recall": [
+     0.9978060604525694,
+     0.00033032367216384714
+    ],
+    "nuc_f1": [
+     0.9709631656257445,
+     0.0015514261163836617
+    ],
+    "foot_precision": [
+     0.3636740097053357,
+     0.03404256745065383
+    ],
+    "foot_recall": [
+     0.5186198715529288,
+     0.02110265252474047
+    ],
+    "foot_f1": [
+     0.42718411293027175,
+     0.02993642685684679
+    ],
+    "dyad_median_err": [
+     3.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9046952932098765,
+     0.003246068043819126
+    ],
+    "false_nuc_per_10kb_island": [
+     9.933872993434079,
+     0.44168915634553946
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.022895437800544694,
+     0.0051979236694598
+    ],
+    "occupancy_mae": [
+     0.11427783489862985,
+     0.012957301008786438
+    ],
+    "ms_per_read": [
+     76.3619330509256,
+     3.8731227773523678
+    ]
+   },
+   {
+    "x": 0.08,
+    "nuc_precision": [
+     0.9332578587358853,
+     0.0030652037777139304
+    ],
+    "nuc_recall": [
+     0.9954603420508245,
+     0.00046627257924325655
+    ],
+    "nuc_f1": [
+     0.9633540409123585,
+     0.0018230595999130107
+    ],
+    "foot_precision": [
+     0.4356730603623866,
+     0.027822994857307937
+    ],
+    "foot_recall": [
+     0.4581238177511469,
+     0.014524816337480526
+    ],
+    "foot_f1": [
+     0.44641584819009683,
+     0.020484429737710756
+    ],
+    "dyad_median_err": [
+     3.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.8988689043209876,
+     0.0034843540852698865
+    ],
+    "false_nuc_per_10kb_island": [
+     12.264503066694969,
+     0.2537555734785149
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.04141680987419074,
+     0.005508808079448434
+    ],
+    "occupancy_mae": [
+     0.13236780021413244,
+     0.010873846701935317
+    ],
+    "ms_per_read": [
+     72.28285117870406,
+     0.7715653479182476
+    ]
+   }
+  ],
+  "fiberstate_noEM": [
+   {
+    "x": 0.005,
+    "nuc_precision": [
+     0.9970263298489402,
+     0.0005391052970939198
+    ],
+    "nuc_recall": [
+     0.9999545247832403,
+     3.713373617679259e-05
+    ],
+    "nuc_f1": [
+     0.9984882161874804,
+     0.0002870472334349199
+    ],
+    "foot_precision": [
+     0.8872399491066866,
+     0.010396649766218548
+    ],
+    "foot_recall": [
+     0.6456265688149746,
+     0.019576907649923626
+    ],
+    "foot_f1": [
+     0.7470910228747499,
+     0.010505331401747916
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9487072530864199,
+     0.0003265614602300439
+    ],
+    "false_nuc_per_10kb_island": [
+     0.3979936026317814,
+     0.07872923746161553
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.05116806746206315,
+     0.013222510209162557
+    ],
+    "occupancy_mae": [
+     0.045849240637846844,
+     0.008170738704527114
+    ],
+    "ms_per_read": [
+     22.471312560180987,
+     1.005397216447586
+    ]
+   },
+   {
+    "x": 0.02,
+    "nuc_precision": [
+     0.9968450745525691,
+     0.0006194692334614797
+    ],
+    "nuc_recall": [
+     0.9997126312092678,
+     9.262223413546448e-05
+    ],
+    "nuc_f1": [
+     0.9982766667974632,
+     0.0002651733531773055
+    ],
+    "foot_precision": [
+     0.8803269131966779,
+     0.013996156248572107
+    ],
+    "foot_recall": [
+     0.620935231218185,
+     0.016698062091367854
+    ],
+    "foot_f1": [
+     0.7279072564142552,
+     0.007413802459061837
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9468162037037037,
+     0.00038654293139879286
+    ],
+    "false_nuc_per_10kb_island": [
+     0.41623143982656335,
+     0.07973559920459332
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.05660551952146994,
+     0.018409914390405145
+    ],
+    "occupancy_mae": [
+     0.05077693487130064,
+     0.008688552852438493
+    ],
+    "ms_per_read": [
+     20.6951597518517,
+     2.0677013667258834
+    ]
+   },
+   {
+    "x": 0.05,
+    "nuc_precision": [
+     0.9967496323676427,
+     0.0002208412932230821
+    ],
+    "nuc_recall": [
+     0.9979279892907456,
+     0.0006787443641945844
+    ],
+    "nuc_f1": [
+     0.9973382607420112,
+     0.00023007813104029275
+    ],
+    "foot_precision": [
+     0.8173357181860456,
+     0.012533077400118888
+    ],
+    "foot_recall": [
+     0.5646287051394022,
+     0.01625288713521043
+    ],
+    "foot_f1": [
+     0.6675756037555193,
+     0.007858074755267369
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9407679783950617,
+     0.0006788330203018169
+    ],
+    "false_nuc_per_10kb_island": [
+     0.43505369928451354,
+     0.029523948155606796
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.05444698734378909,
+     0.01317790968942106
+    ],
+    "occupancy_mae": [
+     0.06552166111318086,
+     0.011736915740156263
+    ],
+    "ms_per_read": [
+     22.073323000000755,
+     1.2390483969376838
+    ]
+   },
+   {
+    "x": 0.08,
+    "nuc_precision": [
+     0.9960274235391741,
+     0.00020038247238927023
+    ],
+    "nuc_recall": [
+     0.9904372744617483,
+     0.0011067888443783774
+    ],
+    "nuc_f1": [
+     0.9932241091990867,
+     0.0005160822606231717
+    ],
+    "foot_precision": [
+     0.6171187012176816,
+     0.009571532783466646
+    ],
+    "foot_recall": [
+     0.501223087420465,
+     0.013339845323597964
+    ],
+    "foot_f1": [
+     0.5529983934690317,
+     0.007919434201189766
+    ],
+    "dyad_median_err": [
+     3.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9281163580246914,
+     0.0011798580052091797
+    ],
+    "false_nuc_per_10kb_island": [
+     0.5400430101365649,
+     0.03084529366589174
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.06115058936297948,
+     0.0079281850412691
+    ],
+    "occupancy_mae": [
+     0.08230322682004025,
+     0.012984364433912562
+    ],
+    "ms_per_read": [
+     20.685327652777822,
+     0.34733898017050885
+    ]
+   }
+  ],
+  "gap_threshold": [
+   {
+    "x": 0.005,
+    "nuc_precision": [
+     0.987845931643078,
+     0.0003338498280339424
+    ],
+    "nuc_recall": [
+     0.9446053483565029,
+     0.0021952309001785604
+    ],
+    "nuc_f1": [
+     0.9657403042731012,
+     0.0010603384627204504
+    ],
+    "foot_precision": [
+     0.09864555801126255,
+     0.004541992982455644
+    ],
+    "foot_recall": [
+     0.8543431314997912,
+     0.014595316577240591
+    ],
+    "foot_f1": [
+     0.17684726357148714,
+     0.007500688847199798
+    ],
+    "dyad_median_err": [
+     3.8333333333333335,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.8597300154320987,
+     0.001954039271227359
+    ],
+    "false_nuc_per_10kb_island": [
+     1.6836837070599335,
+     0.009797575242632596
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.13833258753054248,
+     0.024584287183746313
+    ],
+    "occupancy_mae": [
+     0.0837964560213137,
+     0.015853345768030994
+    ],
+    "ms_per_read": [
+     0.4106719740748219,
+     0.010734258164617923
+    ]
+   },
+   {
+    "x": 0.02,
+    "nuc_precision": [
+     0.9770351907294752,
+     0.0014048467099541733
+    ],
+    "nuc_recall": [
+     0.7710525337349416,
+     0.0037196418127879247
+    ],
+    "nuc_f1": [
+     0.8619006504565783,
+     0.0019851664048607955
+    ],
+    "foot_precision": [
+     0.03517520507824978,
+     0.0011886035497027374
+    ],
+    "foot_recall": [
+     0.8043677203097493,
+     0.01072978741167215
+    ],
+    "foot_f1": [
+     0.06740151330553779,
+     0.0022154985539984775
+    ],
+    "dyad_median_err": [
+     9.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.6916331790123458,
+     0.0015521518824835195
+    ],
+    "false_nuc_per_10kb_island": [
+     2.1879852483215796,
+     0.11000997490402793
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.39880930050163127,
+     0.024801869679990096
+    ],
+    "occupancy_mae": [
+     0.10754556954746708,
+     0.012777253811931018
+    ],
+    "ms_per_read": [
+     0.432944970366491,
+     0.02684067595220045
+    ]
+   },
+   {
+    "x": 0.05,
+    "nuc_precision": [
+     0.9515845762089766,
+     0.0012040878115664412
+    ],
+    "nuc_recall": [
+     0.44722909985794335,
+     0.005501175483571553
+    ],
+    "nuc_f1": [
+     0.6084584906313603,
+     0.004892650828247016
+    ],
+    "foot_precision": [
+     0.017107491454839956,
+     0.00048450899241278913
+    ],
+    "foot_recall": [
+     0.7058519554723833,
+     0.009338127443314845
+    ],
+    "foot_f1": [
+     0.03340507218294273,
+     0.0009321985283625011
+    ],
+    "dyad_median_err": [
+     15.833333333333334,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.47480115740740736,
+     0.0002250615135899738
+    ],
+    "false_nuc_per_10kb_island": [
+     3.082939303009257,
+     0.13474629819862335
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.365452632904064,
+     0.0413101831693121
+    ],
+    "occupancy_mae": [
+     0.13816621304761723,
+     0.015701736674201047
+    ],
+    "ms_per_read": [
+     0.5049733555583519,
+     0.02667231024888838
+    ]
+   },
+   {
+    "x": 0.08,
+    "nuc_precision": [
+     0.9176941642307983,
+     0.0009281473329085414
+    ],
+    "nuc_recall": [
+     0.26131622509693037,
+     0.005592769411738725
+    ],
+    "nuc_f1": [
+     0.4067615586474296,
+     0.0066832787237992245
+    ],
+    "foot_precision": [
+     0.012656419226944602,
+     0.0002840793447602801
+    ],
+    "foot_recall": [
+     0.6152849502055852,
+     0.008684724856795376
+    ],
+    "foot_f1": [
+     0.024802499953714804,
+     0.000549868493604636
+    ],
+    "dyad_median_err": [
+     18.666666666666668,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.3674461419753086,
+     0.00042104355519757467
+    ],
+    "false_nuc_per_10kb_island": [
+     3.6919871449670345,
+     0.06291283623207986
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.1585052831999947,
+     0.015494198155315641
+    ],
+    "occupancy_mae": [
+     0.1600879925120912,
+     0.021886242235885152
+    ],
+    "ms_per_read": [
+     0.5107818861105258,
+     0.011719637954925576
+    ]
+   }
+  ],
+  "naive_hmm": [
+   {
+    "x": 0.005,
+    "nuc_precision": [
+     0.943475703588787,
+     0.0019865661092460245
+    ],
+    "nuc_recall": [
+     0.893581897643459,
+     0.0054093377374353335
+    ],
+    "nuc_f1": [
+     0.9178474770577177,
+     0.0037660893539310544
+    ],
+    "foot_precision": [
+     0.0,
+     0.0
+    ],
+    "foot_recall": [
+     0.0,
+     0.0
+    ],
+    "foot_f1": [
+     0.0,
+     0.0
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "base_accuracy": [
+     0.9199521604938271,
+     0.0004699315938756885
+    ],
+    "false_nuc_per_10kb_island": [
+     8.48640042095431,
+     0.0914895598309362
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.3369413057540956,
+     0.03141397290500354
+    ],
+    "occupancy_mae": [
+     0.37403965333282224,
+     0.019138263535781817
+    ],
+    "ms_per_read": [
+     0.33329440462942467,
+     0.004482510572350898
+    ]
+   },
+   {
+    "x": 0.02,
+    "nuc_precision": [
+     0.903660010641845,
+     0.002819554016937252
+    ],
+    "nuc_recall": [
+     0.8522487051518154,
+     0.0054859457279913025
+    ],
+    "nuc_f1": [
+     0.8771993037263807,
+     0.004231410962582878
+    ],
+    "foot_precision": [
+     0.0,
+     0.0
+    ],
+    "foot_recall": [
+     0.0,
+     0.0
+    ],
+    "foot_f1": [
+     0.0,
+     0.0
+    ],
+    "dyad_median_err": [
+     4.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.8675030864197532,
+     0.00029915936447074586
+    ],
+    "false_nuc_per_10kb_island": [
+     8.248289476147287,
+     0.09185461280804623
+    ],
+    "false_nuc_per_10kb_bg": [
+     3.1319442177602936,
+     0.107717833972262
+    ],
+    "occupancy_mae": [
+     0.37403965333282224,
+     0.019138263535781817
+    ],
+    "ms_per_read": [
+     0.3294359851843688,
+     0.017040809617125972
+    ]
+   },
+   {
+    "x": 0.05,
+    "nuc_precision": [
+     0.7552673369562827,
+     0.00180050087547475
+    ],
+    "nuc_recall": [
+     0.619487707351893,
+     0.004371396242286054
+    ],
+    "nuc_f1": [
+     0.6806680540244572,
+     0.0033134679059957563
+    ],
+    "foot_precision": [
+     0.0,
+     0.0
+    ],
+    "foot_recall": [
+     0.0,
+     0.0
+    ],
+    "foot_f1": [
+     0.0,
+     0.0
+    ],
+    "dyad_median_err": [
+     8.5,
+     0.0
+    ],
+    "base_accuracy": [
+     0.7079770833333333,
+     0.0007557797227067354
+    ],
+    "false_nuc_per_10kb_island": [
+     8.66292873404411,
+     0.15847562728025416
+    ],
+    "false_nuc_per_10kb_bg": [
+     10.890204517797772,
+     0.08076272492908071
+    ],
+    "occupancy_mae": [
+     0.37403965333282224,
+     0.019138263535781817
+    ],
+    "ms_per_read": [
+     0.33208667685429377,
+     0.004977368199285768
+    ]
+   },
+   {
+    "x": 0.08,
+    "nuc_precision": [
+     0.6367737211150263,
+     0.0046170021874394895
+    ],
+    "nuc_recall": [
+     0.39287972042405656,
+     0.00638610722516924
+    ],
+    "nuc_f1": [
+     0.4859308913791958,
+     0.006185162703838961
+    ],
+    "foot_precision": [
+     0.0,
+     0.0
+    ],
+    "foot_recall": [
+     0.0,
+     0.0
+    ],
+    "foot_f1": [
+     0.0,
+     0.0
+    ],
+    "dyad_median_err": [
+     11.333333333333334,
+     0.23570226039551584
+    ],
+    "base_accuracy": [
+     0.5635878086419752,
+     0.0036273064947341866
+    ],
+    "false_nuc_per_10kb_island": [
+     10.363195566679115,
+     0.2265666607868289
+    ],
+    "false_nuc_per_10kb_bg": [
+     11.866759860382365,
+     0.1334240984566224
+    ],
+    "occupancy_mae": [
+     0.37403965333282224,
+     0.019138263535781817
+    ],
+    "ms_per_read": [
+     0.3107644111107927,
+     0.0012585545308895657
+    ]
+   }
+  ],
+  "fibertools": [
+   {
+    "x": 0.005,
+    "nuc_precision": [
+     0.9889162488187804,
+     0.0003187006975727472
+    ],
+    "nuc_recall": [
+     0.9748928547994943,
+     0.0004936139038008151
+    ],
+    "nuc_f1": [
+     0.9818544679380888,
+     0.00040060629362770095
+    ],
+    "dyad_median_err": [
+     3.0,
+     0.0
+    ],
+    "false_nuc_per_10kb_island": [
+     1.7760191182417386,
+     0.05171850354789621
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.051247051865576466,
+     0.015869320296968047
+    ],
+    "ms_per_read": [
+     0.6722552722222913,
+     0.03755739775025285
+    ]
+   },
+   {
+    "x": 0.02,
+    "nuc_precision": [
+     0.9851767250744787,
+     0.0010836039181421437
+    ],
+    "nuc_recall": [
+     0.9453199681197976,
+     0.0006266341460126666
+    ],
+    "nuc_f1": [
+     0.9648367769267335,
+     0.0007960674374087978
+    ],
+    "dyad_median_err": [
+     4.5,
+     0.0
+    ],
+    "false_nuc_per_10kb_island": [
+     2.104810117533269,
+     0.07422728366213245
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.15088405710403466,
+     0.015220991368755982
+    ],
+    "ms_per_read": [
+     0.7950811148148246,
+     0.024107644332098804
+    ]
+   },
+   {
+    "x": 0.05,
+    "nuc_precision": [
+     0.9739135893376387,
+     0.0005906681471778861
+    ],
+    "nuc_recall": [
+     0.7300560028545072,
+     0.0028863910515567904
+    ],
+    "nuc_f1": [
+     0.8345328014059823,
+     0.0020449652301340643
+    ],
+    "dyad_median_err": [
+     8.5,
+     0.0
+    ],
+    "false_nuc_per_10kb_island": [
+     2.912496626114954,
+     0.08135759220126318
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.20202688270722538,
+     0.008755930352717971
+    ],
+    "ms_per_read": [
+     0.8269829092592283,
+     0.052142886558244755
+    ]
+   },
+   {
+    "x": 0.08,
+    "nuc_precision": [
+     0.9554081505677724,
+     0.0015574292390909998
+    ],
+    "nuc_recall": [
+     0.48270393582667387,
+     0.0057816850179448044
+    ],
+    "nuc_f1": [
+     0.6413520331212652,
+     0.005423919170807158
+    ],
+    "dyad_median_err": [
+     11.166666666666666,
+     0.23570226039551584
+    ],
+    "false_nuc_per_10kb_island": [
+     3.585435551103662,
+     0.21873665103788756
+    ],
+    "false_nuc_per_10kb_bg": [
+     0.138361088216311,
+     0.025293995520492545
+    ],
+    "ms_per_read": [
+     0.7631481203704711,
+     0.03022709492065253
+    ]
+   }
+  ]
+ },
+ "cooccupancy": {
+  "fiberstate|conditioned": {
+   "auroc": 0.9367418546365914,
+   "n_pairs": 200,
+   "n_coupled": 95,
+   "tp": 73,
+   "fp": 2,
+   "n_informative": 199,
+   "fdr": 0.02666666666666667,
+   "power": 0.7684210526315789
+  },
+  "fiberstate|unconditioned": {
+   "auroc": 0.8361904761904762,
+   "n_pairs": 200,
+   "n_coupled": 95,
+   "tp": 76,
+   "fp": 37,
+   "n_informative": 200,
+   "fdr": 0.3274336283185841,
+   "power": 0.8
+  },
+  "gap_threshold|conditioned": {
+   "auroc": 0.9033583959899749,
+   "n_pairs": 200,
+   "n_coupled": 95,
+   "tp": 59,
+   "fp": 5,
+   "n_informative": 181,
+   "fdr": 0.078125,
+   "power": 0.6210526315789474
+  },
+  "gap_threshold|unconditioned": {
+   "auroc": 0.8218045112781955,
+   "n_pairs": 200,
+   "n_coupled": 95,
+   "tp": 75,
+   "fp": 24,
+   "n_informative": 197,
+   "fdr": 0.24242424242424243,
+   "power": 0.7894736842105263
+  },
+  "naive_hmm|conditioned": {
+   "auroc": 0.4763408521303258,
+   "n_pairs": 200,
+   "n_coupled": 95,
+   "tp": 0,
+   "fp": 0,
+   "n_informative": 0,
+   "fdr": 0.0,
+   "power": 0.0
+  },
+  "naive_hmm|unconditioned": {
+   "auroc": 0.5,
+   "n_pairs": 200,
+   "n_coupled": 95,
+   "tp": 0,
+   "fp": 0,
+   "n_informative": 0,
+   "fdr": 0.0,
+   "power": 0.0
+  }
+ }
+};
+const SERIES = [
+  { key: "fiberstate", label: "fiberstate (new)", color: "var(--s1)" },
+  { key: "fibertools", label: "fibertools-rs v0.13.1", color: "var(--s2)" },
+  { key: "gap_threshold", label: "Gap threshold (tuned)", color: "var(--s3)" },
+  { key: "naive_hmm", label: "Per-base HMM (tuned)", color: "var(--s4)" },
+];
+const NAMES = { fiberstate: "fiberstate", fiberstate_noseq: "fiberstate −seq", fiberstate_noEM: "fiberstate −EM",
+  fibertools: "fibertools-rs", gap_threshold: "Gap threshold", naive_hmm: "Per-base HMM" };
+const at = (sec, m, x, k) => { const r = (S[sec][m] || []).find(d => Math.abs(d.x - x) < 1e-9); return r && r[k] ? r[k][0] : NaN; };
+
+function legend(el) {
+  el.innerHTML = SERIES.map(s => `<span><i style="background:${s.color}"></i>${s.label}</span>`).join("");
+}
+
+function lineChart(id, sec, metric, opts) {
+  const el = document.getElementById(id);
+  const W = 400, H = 250, m = { l: 44, r: 12, t: 8, b: 36 };
+  const series = SERIES.filter(s => S[sec][s.key] && S[sec][s.key][0][metric]);
+  const xs = S[sec].fiberstate.map(d => d.x);
+  let ys = [];
+  series.forEach(s => S[sec][s.key].forEach(d => ys.push(d[metric][0])));
+  let y0 = opts.y0 ?? Math.min(...ys), y1 = opts.y1 ?? Math.max(...ys);
+  const xi = i => m.l + (W - m.l - m.r) * i / (xs.length - 1);
+  const yv = v => m.t + (H - m.t - m.b) * (1 - (v - y0) / (y1 - y0));
+  const ticks = opts.ticks;
+  let g = `<g class="grid">${ticks.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${yv(t)}" y2="${yv(t)}"/>`).join("")}</g>`;
+  g += `<g class="axis">${ticks.map(t => `<text x="${m.l - 6}" y="${yv(t) + 4}" text-anchor="end">${opts.fmt(t)}</text>`).join("")}`;
+  g += xs.map((x, i) => `<text x="${xi(i)}" y="${H - m.b + 16}" text-anchor="middle">${x}</text>`).join("");
+  g += `<text x="${(m.l + W - m.r) / 2}" y="${H - 4}" text-anchor="middle">${opts.xlabel}</text></g>`;
+  series.forEach(s => {
+    const pts = S[sec][s.key].map((d, i) => [xi(i), yv(Math.max(y0, Math.min(y1, d[metric][0])))]);
+    g += `<path d="M${pts.map(p => p.join(",")).join("L")}" fill="none" stroke="${s.color}" stroke-width="2"/>`;
+    g += pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${s.color}" stroke="var(--bg)" stroke-width="2"/>`).join("");
+  });
+  g += `<line class="cross" x1="0" x2="0" y1="${m.t}" y2="${H - m.b}" stroke="var(--muted)" stroke-width="1" visibility="hidden"/>`;
+  el.innerHTML = `<div class="ttl">${opts.title}</div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opts.title}">${g}<rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}" fill="transparent"/></svg><div class="tip" hidden></div>`;
+  const svg = el.querySelector("svg"), tip = el.querySelector(".tip"), cross = svg.querySelector(".cross");
+  svg.addEventListener("pointermove", e => {
+    const b = svg.getBoundingClientRect();
+    const px = (e.clientX - b.left) * W / b.width;
+    let i = Math.round((px - m.l) / ((W - m.l - m.r) / (xs.length - 1)));
+    i = Math.max(0, Math.min(xs.length - 1, i));
+    cross.setAttribute("x1", xi(i)); cross.setAttribute("x2", xi(i)); cross.setAttribute("visibility", "visible");
+    tip.innerHTML = `${opts.xlabel} = ${xs[i]}<br>` + series.map(s => {
+      const d = S[sec][s.key][i][metric]; return `<span style="color:${s.color}">●</span> ${s.label}: ${opts.fmtTip(d[0])} ± ${opts.fmtTip(d[1])}`; }).join("<br>");
+    tip.hidden = false;
+    const left = xi(i) * b.width / W;
+    tip.style.left = Math.min(left + 12, b.width - tip.offsetWidth) + "px";
+    tip.style.top = "24px";
+  });
+  svg.addEventListener("pointerleave", () => { tip.hidden = true; cross.setAttribute("visibility", "hidden"); });
+}
+
+const f3 = v => v.toFixed(3), f2 = v => v.toFixed(2), f1 = v => v.toFixed(1);
+legend(document.getElementById("legend1"));
+lineChart("c_sens_nuc", "sensitivity", "nuc_f1", { title: "Nucleosome F1", y0: 0.6, y1: 1, ticks: [0.6, 0.7, 0.8, 0.9, 1], fmt: f1, fmtTip: f3, xlabel: "m6A sensitivity" });
+lineChart("c_sens_island", "sensitivity", "false_nuc_per_10kb_island", { title: "False nucleosomes per 10 kb of GC island", y0: 0, ticks: (() => { const mx = Math.max(...SERIES.flatMap(s => (S.sensitivity[s.key]||[]).map(d => d.false_nuc_per_10kb_island ? d.false_nuc_per_10kb_island[0] : 0))); const step = mx > 40 ? 20 : mx > 20 ? 10 : 5; const t = []; for (let v = 0; v <= mx + step; v += step) t.push(v); return t; })(), fmt: v => v, fmtTip: f2, xlabel: "m6A sensitivity" });
+lineChart("c_fp_nuc", "fp_rate", "nuc_f1", { title: "Nucleosome F1", y0: 0.4, y1: 1, ticks: [0.4, 0.6, 0.8, 1], fmt: f1, fmtTip: f3, xlabel: "m6A false-positive rate" });
+lineChart("c_sens_foot", "sensitivity", "foot_f1", { title: "TF footprint F1", y0: 0, y1: 1, ticks: [0, 0.25, 0.5, 0.75, 1], fmt: v => v, fmtTip: f3, xlabel: "m6A sensitivity" });
+
+// Findings
+(function () {
+  const g = (m, k) => at("sensitivity", m, 0.6, k);
+  const fpF = m => at("fp_rate", m, 0.08, "nuc_f1");
+  const cards = [
+    [f3(g("fiberstate", "nuc_f1")), `fibertools ${f3(g("fibertools", "nuc_f1"))}`, "Nucleosome F1. Both are strong; fiberstate is tighter on dyad position and recall."],
+    [f2(g("fiberstate", "false_nuc_per_10kb_island")), `fibertools ${f2(g("fibertools", "false_nuc_per_10kb_island"))}`, "False nucleosomes per 10 kb of GC-rich island, where gap-based callers mistake A/T-poor DNA for protection."],
+    [f3(fpF("fiberstate")), `fibertools ${f3(fpF("fibertools"))}`, "Nucleosome F1 when 8% of protected A/T carry spurious m6A calls."],
+    [f3(g("fiberstate", "foot_f1")), `best baseline ${f3(Math.max(g("gap_threshold", "foot_f1"), g("naive_hmm", "foot_f1")))}`, "TF footprint F1, de novo, without motif annotation."],
+  ];
+  document.getElementById("findings").innerHTML = cards.map(c => `<div class="finding"><div class="num">${c[0]}</div><div class="vs">${c[1]}</div><p>${c[2]}</p></div>`).join("");
+})();
+
+// Main table
+(function () {
+  const cols = [["nuc_precision", "Nuc prec", f3, 1], ["nuc_recall", "Nuc rec", f3, 1], ["nuc_f1", "Nuc F1", f3, 1],
+    ["dyad_median_err", "Dyad err (bp)", f1, -1], ["foot_f1", "Foot F1", f3, 1], ["false_nuc_per_10kb_island", "False nuc / 10 kb island", f2, -1],
+    ["occupancy_mae", "Occupancy err", f3, -1], ["ms_per_read", "ms / fiber", f1, 0]];
+  const rows = ["fiberstate", "fiberstate_noseq", "fiberstate_noEM", "fibertools", "gap_threshold", "naive_hmm"];
+  const best = {};
+  cols.forEach(([k, , , dir]) => { if (!dir) return; const v = rows.map(r => at("sensitivity", r, 0.6, k)).filter(x => !isNaN(x)); best[k] = dir > 0 ? Math.max(...v) : Math.min(...v); });
+  let h = `<thead><tr><th>Method</th>${cols.map(c => `<th>${c[1]}</th>`).join("")}</tr></thead><tbody>`;
+  rows.forEach(r => {
+    h += `<tr class="${r === "fiberstate" ? "ours" : ""}"><td>${NAMES[r]}</td>`;
+    cols.forEach(([k, , fmt]) => { const v = at("sensitivity", r, 0.6, k);
+      h += isNaN(v) ? `<td class="na">n/a</td>` : `<td class="${Math.abs(v - best[k]) < 1e-12 ? "best" : ""}">${fmt(v)}</td>`; });
+    h += "</tr>";
+  });
+  document.getElementById("tbl_main").innerHTML = h + "</tbody>";
+})();
+
+// Co-occupancy table
+(function () {
+  const C = S.cooccupancy;
+  const rows = [["fiberstate|conditioned", "fiberstate, accessibility-conditioned"], ["fiberstate|unconditioned", "fiberstate, unconditioned"],
+    ["gap_threshold|conditioned", "Gap threshold, conditioned"], ["gap_threshold|unconditioned", "Gap threshold, unconditioned"]];
+  let h = `<thead><tr><th>Method</th><th>AUROC</th><th>Power at z>1.645</th><th>False discovery rate</th><th>Calls (true / false)</th></tr></thead><tbody>`;
+  rows.forEach(([k, n]) => { const d = C[k]; if (!d) return;
+    h += `<tr class="${k.startsWith("fiberstate|cond") ? "ours" : ""}"><td>${n}</td><td>${f3(d.auroc)}</td><td>${f3(d.power)}</td><td>${f3(d.fdr)}</td><td>${d.tp} / ${d.fp}</td></tr>`; });
+  document.getElementById("tbl_co").innerHTML = h + "</tbody>";
+  const any = Object.values(C)[0];
+  document.getElementById("co_note").textContent = `${any.n_pairs} site pairs, each inside one regulatory element; ${any.n_coupled} truly cooperative, the rest bind independently given that the element is open. 50 loci × 60 fibers. Calls: positive coupling at one-sided p < 0.05 (Fisher's exact test), among pairs where both sites are bound and unbound on at least 3 molecules (version 0.5; earlier versions used a normal approximation whose fixed pseudo-counts made rarely bound pairs look coupled). The per-base HMM never calls footprints, so none of its pairs is testable.`;
+})();
+
+const TF = {"source": "user's run of rerun_hiddenfoot.sh, 2026-10-31 (fiberstate 0.3 defaults; HiddenFoot -cutoffwms 1e-6); NRF1 (JASPAR MA0506.1) from run_tf_test.sh with fiberstate 0.4", "tools": ["fiberstate", "fibertools_footprint", "FiberHMM", "HiddenFoot"], "sets": {"CTCF GM12878": {"sites": "250+212", "auroc": [0.896, 0.873, 0.862, 0.875], "unbound": [1.4, 3.0, 3.7, 2.8], "bound": [21.1, 24.2, 23.8, 26.8], "weak": [0.771, 0.735, 0.717, 0.736], "strong": [0.994, 0.986, 0.987, 0.977], "p": {"FiberHMM": 0.00174, "fibertools_footprint": 0.0328, "HiddenFoot": 0.115}}, "CTCF K562": {"sites": "249+212", "auroc": [0.888, 0.874, 0.883, 0.828], "unbound": [1.5, 3.3, 3.1, 3.2], "bound": [24.5, 29.1, 29.3, 20.3], "weak": [0.741, 0.699, 0.719, 0.679], "strong": [0.981, 0.98, 0.984, 0.935], "p": {"FiberHMM": 0.638, "fibertools_footprint": 0.18, "HiddenFoot": 0.000401}}, "REST GM12878": {"sites": "250+162", "auroc": [0.738, 0.716, 0.701, 0.735], "unbound": [0.9, 1.5, 2.6, 1.8], "bound": [4.9, 5.7, 6.8, 7.0], "weak": [0.53, 0.546, 0.546, 0.557], "strong": [0.95, 0.944, 0.904, 0.937], "p": {"FiberHMM": 0.0782, "fibertools_footprint": 0.22, "HiddenFoot": 0.904}}, "REST K562": {"sites": "250+203", "auroc": [0.598, 0.57, 0.579, 0.55], "unbound": [0.3, 1.3, 1.4, 1.9], "bound": [2.7, 4.1, 4.1, 5.0], "weak": [0.528, 0.53, 0.512, 0.469], "strong": [0.712, 0.688, 0.701, 0.688], "p": {"FiberHMM": 0.382, "fibertools_footprint": 0.156, "HiddenFoot": 0.0295}}, "NRF1 GM12878": {"sites": "250+248", "auroc": [0.843, 0.826, 0.825, 0.819], "unbound": [1.2, 4.9, 3.8, 4.8], "bound": [12.3, 24.8, 17.0, 27.1], "p": {"FiberHMM": 0.268, "fibertools_footprint": 0.336, "HiddenFoot": 0.218}}, "NRF1 K562": {"sites": "250+245", "auroc": [0.651, 0.696, 0.671, 0.693], "unbound": [0.5, 3.4, 2.2, 4.1], "bound": [4.9, 13.8, 9.3, 16.6], "p": {"FiberHMM": 0.342, "fibertools_footprint": 0.0453, "HiddenFoot": 0.0928}}}, "raw_auroc": {"CTCF GM12878": 0.525, "CTCF K562": 0.649, "REST GM12878": 0.287, "REST K562": 0.459, "NRF1 GM12878": 0.335, "NRF1 K562": 0.439}};
+(() => {
+  const names = ["fiberstate", "fibertools", "FiberHMM", "HiddenFoot"];
+  const pk = ["", "fibertools_footprint", "FiberHMM", "HiddenFoot"];
+  const fp = p => p < 0.001 ? p.toExponential(0) : p < 0.01 ? p.toFixed(3) : p.toFixed(2);
+  let h = `<thead><tr><th style="text-align:left">Set</th><th style="text-align:left">Measure</th>${names.map(n => `<th>${n}</th>`).join("")}</tr></thead><tbody>`;
+  for (const [set, d] of Object.entries(TF.sets)) {
+    const best = Math.max(...d.auroc);
+    const rows = [["AUROC (p)", d.auroc.map((v, i) => `${v === best ? "<b>" : ""}${v.toFixed(3)}${v === best ? "</b>" : ""}${i ? ` <span style="color:var(--muted)">(${fp(d.p[pk[i]])})</span>` : ""}`)],
+      ["False calls, unbound", d.unbound.map(v => v.toFixed(1) + "%")],
+      ["Footprinted, bound", d.bound.map(v => v.toFixed(1) + "%")],
+      ...(d.weak ? [["AUROC, weak ChIP", d.weak.map(v => v.toFixed(3))], ["AUROC, strong ChIP", d.strong.map(v => v.toFixed(3))]] : [])];
+    rows.forEach((r, j) => { h += `<tr>${j === 0 ? `<td rowspan="${rows.length}" style="text-align:left;white-space:normal;min-width:110px"><b>${set}</b><br><span style="color:var(--muted);font-size:.8rem">${d.sites} sites<br>unmarked motif ${TF.raw_auroc[set].toFixed(3)}</span></td>` : ""}<td style="text-align:left">${r[0]}</td>${r[1].map(x => `<td>${x}</td>`).join("")}</tr>`; });
+  }
+  document.getElementById("tbl_tf").innerHTML = h + "</tbody>";
+})();
+
+const MF = {"source": "user's run of run_matched_fpr.sh, 2026-10-31 (fiberstate 0.4.1 --posterior-tags; score = mean footprint posterior over the motif)", "tools": ["fiberstate", "fibertools_footprint", "FiberHMM", "HiddenFoot"], "sets": {"CTCF GM12878": {"at1": [17.1, 8.2, 5.4, 19.5], "pauc": [0.216, 0.174, 0.146, 0.246], "diff": {"fibertools_footprint": [8.9, 6.8, 11.1, "<0.001"], "FiberHMM": [11.7, 9.0, 14.9, "<0.001"], "HiddenFoot": [-2.4, -4.8, 0.4, "0.13"]}}, "CTCF K562": {"at1": [16.4, 8.9, 9.1, 9.6], "pauc": [0.249, 0.198, 0.203, 0.17], "diff": {"fibertools_footprint": [7.4, 2.5, 15.1, "<0.001"], "FiberHMM": [7.3, 2.4, 15.7, "<0.001"], "HiddenFoot": [6.8, -1.8, 12.8, "0.15"]}}, "REST GM12878": {"at1": [4.8, 3.9, 1.7, 5.6], "pauc": [0.068, 0.061, 0.052, 0.078], "diff": {"fibertools_footprint": [0.9, 0.2, 1.5, "0.004"], "FiberHMM": [3.0, 2.1, 4.1, "<0.001"], "HiddenFoot": [-0.9, -1.6, -0.3, "0.004"]}}, "REST K562": {"at1": [3.9, 3.1, 2.2, 4.3], "pauc": [0.056, 0.049, 0.047, 0.059], "diff": {"fibertools_footprint": [0.8, -0.1, 1.5, "0.10"], "FiberHMM": [1.7, -0.2, 2.4, "0.09"], "HiddenFoot": [-0.4, -1.2, 0.5, "0.38"]}}, "NRF1 GM12878": {"at1": [9.9, 5.0, 2.1, 9.4], "pauc": [0.139, 0.126, 0.089, 0.164], "diff": {"fibertools_footprint": [4.9, 2.9, 7.1, "<0.001"], "FiberHMM": [7.8, 5.6, 10.3, "<0.001"], "HiddenFoot": [0.6, -3.2, 4.5, "0.82"]}}, "NRF1 K562": {"at1": [6.5, 4.1, 2.9, 6.5], "pauc": [0.092, 0.094, 0.077, 0.112], "diff": {"fibertools_footprint": [2.4, 0.8, 4.2, "0.004"], "FiberHMM": [3.6, 1.7, 5.6, "<0.001"], "HiddenFoot": [0.0, -2.6, 2.4, "0.93"]}}}, "held_out_cutoff": {"chosen_on": "CTCF GM12878", "cutoff": 0.35, "site_auroc": {"CTCF GM12878": [0.89, 0.888], "CTCF K562": [0.877, 0.88], "REST GM12878": [0.723, 0.735], "REST K562": [0.6, 0.607], "NRF1 GM12878": [0.85, 0.846], "NRF1 K562": [0.68, 0.664]}}};
+(() => {
+  const names = ["fiberstate", "fibertools", "FiberHMM", "HiddenFoot"];
+  let h = `<thead><tr><th style="text-align:left">Set</th>${names.map(n => `<th>${n}</th>`).join("")}</tr></thead><tbody>`;
+  for (const [set, d] of Object.entries(MF.sets)) {
+    const best = Math.max(...d.at1);
+    h += `<tr><td style="text-align:left"><b>${set}</b></td>` + d.at1.map((v, i) => {
+      const k = MF.tools[i], df = d.diff[k];
+      const b = v === best ? ["<b>", "</b>"] : ["", ""];
+      return `<td>${b[0]}${v.toFixed(1)}%${b[1]}${df ? ` <span style="color:var(--muted)">(${df[0] > 0 ? "+" : ""}${df[0].toFixed(1)}, p ${df[3].startsWith("<") ? df[3] : "= " + df[3]})</span>` : ""}</td>`;
+    }).join("") + `</tr>`;
+  }
+  document.getElementById("tbl_fpr").innerHTML = h + "</tbody>";
+})();
+
+const R = [["Wall time, 8 threads (user's computer): GM12878 CTCF set, 44,614 fibers / K562, 14,976 fibers", "0.4.1: 9.0 min / 3.1 min (0.3: 12 min / 4 min)", "not timed at 8 threads", "1.4 min (GM12878, 4 threads)", "bad", "fiberstate ~6\u00d7 slower than FiberHMM despite twice the threads"], ["Model time per fiber, one core (this workspace, 3,125 fibers)", "26 ms (0.4; 52 ms in 0.3)", "1.5 ms", "not timed", "bad", "fibertools about 17\u00d7 faster"], ["K562, accessibility vs DNase-seq, every open base", "0.878", "0.886", "0.906", "mid", "FIRE 0.951 on held-out data too"], ["Accessibility vs ENCODE DNase-seq (ENCFF784FOQ), every open base", "0.837", "0.838", "0.865", "mid", "FIRE 0.951, best; same on held-out K562"], ["Accessibility vs DNase-seq, open stretches \u2265 100 bp only", "0.915", "0.917", "0.909", "mid", "three-way tie"], ["Nucleosome length, most common (expected ~147 bp)", "148 bp", "128 bp", "132 bp", "good", "fiberstate closest (partly its prior)"], ["Nucleosome repeat length, most common (human ~185\u2013190 bp)", "186 bp", "182 bp", "182 bp", "good", "all in range"], ["A/T marked inside called nucleosomes (lower = stricter)", "1.1%", "0.3%", "1.6%", "mid", "fibertools strictest by design"], ["Neighbouring nucleosomes with linker under 10 bp", "7%", "12%", "7%", "mid", "fiberstate and FiberHMM tie, fewer than fibertools"], ["Nucleosome occupancy, GC-rich DNA inside FIRE peaks", "48%", "47%", "48%", "mid", "three-way tie (earlier gap was a parsing bug)"], ["Nucleosome occupancy, ordinary DNA outside peaks", "74%", "69%", "74%", "mid", "fibertools calls fewer"], ["TF-sized footprints (15\u201350 bp): enrichment in FIRE peaks at equal call numbers", "1.96\u00d7 (15,420 calls)", "not called", "1.64\u00d7 (top 15,420 of 43,241 by its score)", "good", "fiberstate more enriched"]];
+document.getElementById("tbl_real").innerHTML = `<thead><tr><th>Check</th><th>fiberstate</th><th>fibertools</th><th>FiberHMM 3.0.2</th><th style="text-align:left">Reading</th></tr></thead><tbody>` +
+  R.map(r => `<tr><td style="white-space:normal;min-width:220px">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="${/pending|not run/.test(r[3]) ? "na" : ""}">${r[3]}</td><td style="text-align:left"><span class="pill ${r[4]}">${r[5]}</span></td></tr>`).join("") + `</tbody>`;
+document.getElementById("caveats").innerHTML = "\n<p><b>Every fiberstate number on this page comes from versions 0.3 and 0.4.x with default settings</b> (posterior footprint calling at 0.5, GM12878 enzyme table), except the simulated benchmark at the top and the historical notes at the end. Version 0.4 only changes speed and reproduces 0.3's results (see Speed). Rows that existed only for older versions (a small CTCF set from the fibertools-rs test data) were removed.</p>\n<p><b>TF-site tests: at a matched false-positive rate, fiberstate recovers the most binding of the motif-free callers.</b> Held to 1% false calls at unbound sites, fiberstate footprints more molecules at bound sites than FiberHMM and fibertools in all six sets (CTCF, REST and NRF1 in GM12878 and K562), significantly in five (+0.8 to +11.7 percentage points; REST in K562 p = 0.09 to 0.10). It ties HiddenFoot, which is given the motif matrix (within 2.4 points in five sets; HiddenFoot ahead for REST in GM12878, 0.9 points, p = 0.004; fiberstate ahead for CTCF in K562, 6.8 points, p = 0.15). The lower sensitivity seen with default calls is an operating point: fiberstate's default makes about half as many false calls as the others, and at equal false calls it finds more. On site AUROC, which ignores false-call rates, the four tools are close: fiberstate is highest in five of six sets and lowest for NRF1 in K562.</p>\n<p><b>Genome-wide CTCF: the result holds everywhere.</b> Every strong CTCF motif on all 22 autosomes of GM12878 was scored, with no site selection or score matching: 920,549 sites covered by at least 10 molecules (39,537 ChIP-bound), and 6.75 million molecules subsampled to 30%.\n<ul><li>Held to 1% false calls, fiberstate recovered 19.0% of bound molecules, against 10.9% for fibertools and 6.8% for FiberHMM (95% window-bootstrap CIs of the differences: 7.9&ndash;8.2 and 11.9&ndash;12.4 points). It led on all 22 chromosomes.</li>\n<li>Default false calls were 0.71%, 1.92% and 2.93%; site AUROC was 0.834, 0.832 and 0.822.</li>\n<li>For the weakest motifs fiberstate tied fibertools (0.732 vs 0.733); for the strongest it led both (0.915 vs 0.909 and 0.906). The lead over fibertools narrows to 0.7 points at 2% false calls.</li></ul></p>\n<p><b>Calibration.</b> <span class=\"mono\">fiberstate calibrate</span> applies the exact calling steps at every cut-off. It reproduces the benchmark's false-call rates (CTCF in GM12878: 1.40% at 0.5). Pooled over the six sets (94,211 molecules at unbound sites), the false-call rate is 2.53% at cut-off 0.1, 1.09% at 0.5 and 0.61% at 0.9. This is the built-in table behind <span class=\"mono\">--false-call-rate</span>. Per set, rates at 0.5 range sixfold, from 0.26% (REST, K562) to 1.51% (CTCF, K562), so calibrating on one's own sites is preferable.</p>\n<p><b>Co-binding on real molecules: no cooperative pairs, and the test is conservative.</b> We tested pairs of CTCF, REST and NRF1 motif sites 60\u20131000 bp apart near the benchmark sites. In GM12878, 5,612 pairs were informative.\n<ul><li>Control pairs of two unbound sites reached p &lt; 0.05 in 0.4% of cases.</li>\n<li>Conditioning on accessibility roughly halved the raw association (median log odds ratio +0.66 to +0.28 for controls, +0.55 to +0.37 for bound pairs).</li>\n<li>No pair reached q &lt; 0.1. In K562 only 101 pairs were testable, with the same pattern.</li></ul>\nMost pairs (89,127) were not testable, because one site was footprinted on fewer than 3 molecules. Detecting weak cooperativity needs deeper coverage.</p>\n<p><b>The default cut-off stays.</b> Choosing fiberstate's cut-off on CTCF in GM12878 alone picks 0.35 instead of 0.5, which barely changes AUROC there (0.890 vs 0.888) and does not help on the other five sets (changes of -0.012 to +0.016). The cut-off only trades false calls for recovered binding; users who prefer more sensitivity can lower <span class=\"mono\">--foot-posterior</span>.</p>\n<p><b>REST is hard for every tool; NRF1 less so.</b> NRF1 binds a GC-rich motif with few A/T bases for Hia5 to mark, yet all four tools reach AUROC 0.82 to 0.84 in GM12878. For REST only 3 to 7% of molecules are footprinted at ChIP-bound REST sites, and in K562 no tool exceeds AUROC 0.6. REST binding in these cells may be weak or transient, ChIP peaks may include indirect binding, or REST may protect too little DNA from Hia5 to be seen. In GM12878 an unmarked motif is actually more common at unbound sites (AUROC 0.287), because bound sites lie in accessible DNA, so a footprint must be called inside open DNA to count.</p>\n<p><b>HiddenFoot needed a lower motif cutoff.</b> It only considers a TF where the motif score is within ln(1000) of the consensus; 86% of the CTCF and 77% of the REST test sites fall below that, so the first run could not bind at most of them (CTCF AUROC 0.664). With <span class=\"mono\">-cutoffwms 1e-6</span> it is competitive (CTCF GM12878 0.875, REST GM12878 0.735) but weaker in K562 (0.828, 0.550). It fits its model separately at every 301 bp site, which may be too little data at sites with few molecules; that setting was not tuned.</p>\n<p><b>Why 0.3 calls footprints from posteriors.</b> At strongly bound CTCF sites that 0.2 missed, the motif carried no m6A inside a median 36 bp unmarked stretch and fiberstate's own footprint posterior there was a median 0.67, but Viterbi decoding chose linker: footprint lengths vary from 8 to 90 bp, so the footprint state's probability is split across many paths. Calling a footprint wherever the posterior exceeds 0.5 raised CTCF AUROC from 0.877 to 0.896 (GM12878, p = 0.03) and from 0.822 to 0.888 (K562, p = 9e-9).</p>\n<p><b>The cost: twice as many footprint calls genome-wide, less enriched.</b> In the 0.5 Mb GM12878 region, 0.3 calls 21,798 footprints against 10,006 for 0.2, and the share inside FIRE peaks falls from 21% (2.4\u00d7) to 18% (2.0\u00d7). At equal call numbers its TF-sized calls (15\u201350 bp) remain more enriched than FiberHMM's (1.96\u00d7 vs 1.64\u00d7). Nucleosome and accessibility results barely moved (DNase AUROC 0.836 in both versions).</p>\n<p><b>Independent accessibility reference.</b> Against ENCODE DNase-seq peaks, counting every base outside a nucleosome or footprint as open, FiberHMM leads the per-molecule callers (GM12878 0.865, K562 0.906) over fibertools (0.838, 0.886) and fiberstate (0.836, 0.878). On open stretches of at least 100 bp the three tie (0.909 to 0.921). FIRE scores 0.951 in both cell lines; it was trained on GM12878, but scores the same on K562, so it is genuinely the best accessibility caller here.</p>\n<p><b>Unresolved stretches.</b> fiberstate reports long unmarked stretches as one protected segment with an estimated nucleosome count instead of guessing positions (16% of protected DNA on real data); <span class=\"mono\">--keep-inferred</span> restores the guesses. In simulation this lowers nucleosome recall at unchanged precision.</p>\n<p><b>The simulator had the enzyme backwards.</b> It assumed A/T-rich context is marked more; real data shows A-tracts are marked 15\u201325\u00d7 less. The simulated benchmark at the top overstates footprint accuracy.</p>\n<p><b>Speed.</b> Version 0.4 replaces the ring-buffer kernels with dot products over a plain history, which the CPU can vectorise; a nucleosome lasts at least 90 bp, so the sum at each base only needs entries made 90 or more bases earlier. Forward-backward is 2.2\u00d7 faster and Viterbi 1.4\u00d7; a whole molecule takes 26 ms of model time on one core here instead of 52 (fibertools: 1.5 ms). Posteriors agree with 0.3 to 4e-14 and every benchmark number on this page is unchanged to four decimals. Because the per-molecule rates are refitted with differently rounded sums, 1% of nucleosome edges move by 1\u20132 bp where two positions score almost exactly the same; no segment is gained or lost. On the user's laptop the gain was smaller than here: the 44,614-fiber CTCF set took 9.0 minutes on 8 threads with 0.4.1 (while also writing per-base posteriors) against 12 with 0.3, and FiberHMM needs 1.4 minutes on 4 threads. Version 0.4.1 moved reading, m6A decoding and tag writing from the main process into the workers (identical output); the laptop is now limited by worker CPU, with 8 workers sharing a 12-core laptop chip. A 30\u00d7 human genome (about 5.5 million fibers) needs roughly 40 core-hours. Most of the remaining time is the four EM passes that refit each molecule's marking rates; <span class=\"mono\">--em-iters 2</span> trades rate precision for about 1.5\u00d7 more speed.</p>\n<p><b>Other tools.</b> The workspace may not execute third-party programs, so HiddenFoot (commit d1499e8, built with g++ -O3 -fopenmp) and FiberHMM (v3.0.2, <span class=\"mono\">--enzyme hia5 --seq pacbio</span>, defaults), is run on the user's computer. FiberHMM's default m6A threshold (ML 12 of 255) is far looser than the 0.5 used by fiberstate and fibertools. fibertools' <span class=\"mono\">fiber-hmm</span> subcommand is a placeholder in 0.13.1.</p>\n<p><b>History, fixed bugs.</b> (1) fibertools' annotation tag was first read as 0-based and in stored-read orientation, which mirrored its nucleosomes on reverse reads and gave fiberstate two advantages it does not have. (2) An early CTCF comparison counted marks in the flank and did not flip minus-strand motifs. (3) fiberstate 0.1.0 did not scale with threads because numpy's BLAS started its own thread pool in every worker; 0.1.1 limits BLAS to one thread per worker. (4) The fast kernel drifted to NaN on molecules over 25 kb; it now re-anchors every 32 bases.</p>\n<p><b>Not yet tested:</b> genome-wide data, MNase comparisons, other m6A callers (the enzyme table may be caller-specific), soft ML-probability input.</p>\n";
+document.getElementById("setup").innerHTML = "\n<li>Simulated 12 kb loci with 42% background GC and three GC islands each (80% GC, 0.6\u20132 kb), four regulatory elements per locus with 1\u20133 TF sites (15\u201340 bp) and per-element open probability 0.5\u20130.95.</li>\n<li>Robustness sweeps: 12 loci \u00d7 30 fibers, 3 seeds per condition. Sensitivity sweep at false-positive rate 0.02; false-positive sweep at mean sensitivity 0.65.</li>\n<li>A call counts as correct when it overlaps a true segment by at least 50% of both lengths (one-to-one matching). Dyad error is the median center offset of matched nucleosomes.</li>\n<li>fibertools-rs v0.13.1 compiled from crates.io, run as <span class=\"mono\">ft add-nucleosomes</span> with defaults on the same m6A calls.</li>\n<li>Gap threshold: m6A-free runs \u2265 75 bp are nucleosomes, 20\u201374 bp are footprints (grid-searched). Per-base HMM: 3-state, geometric durations, every base an observation (grid-searched rates).</li>\n<li>Co-occupancy: 50 loci \u00d7 60 fibers, two sites per element; coupled pairs share one latent binding draw. Score is the z of the log odds ratio; a call needs z > 1.645.</li>\n<li>Tools considered (searched 31 October 2026: GitHub, PyPI, Bioconductor, bioRxiv and journals). Compared: FiberHMM 3.0.2 and fibertools-rs 0.13.1 (<span class=\"mono\">add-nucleosomes</span>; motif-guided <span class=\"mono\">footprint</span> in the CTCF test); FIRE as the accessibility reference and as a competitor against DNase-seq. <b>Compared at TF sites:</b> HiddenFoot (Molina lab, bioRxiv 2025; per-molecule TF, nucleosome and Pol II posteriors from motifs and per-region methylation matrices; run per site through <span class=\"mono\">bench/hiddenfoot_adapter.py</span>). <b>Not yet compared, but relevant:</b> the Ramani lab SAMOSA / SMRT-Tag HMM (PacBio m6A, two states, research code); nomeR (FMI Basel; per-molecule footprint probabilities for single-molecule footprinting matrices, motif-free). Not comparable: FootprintCharter and dinoR (cluster- or window-level calls on bisulfite SMF), NP-SMLR and nanoNOMe (nanopore GpC), smftools (HMM stage not documented for m6A), dimelo-toolkit and methylscaper (visualisation), IDLI (classifies existing footprints), bonFIRE (compares FIRE peaks), fiberFold (predicts 3D contacts from footprints), FiberBrowser (uses FiberHMM's calls), fiberseq-qc, UCSC hub. fibertools' <span class=\"mono\">fiber-hmm</span> subcommand is a placeholder in 0.13.1.</li>\n\n<li>Real data: GM12878 FIRE v0.1 CRAM streamed for chr19:45.0\u201345.5 Mb (m6A tags only), FIRE peaks with FDR \u2264 0.05; GC-rich = \u226565% GC over 200 bp of hg38. CTCF set from the fibertools-rs test data.</li>\n";
+</script>

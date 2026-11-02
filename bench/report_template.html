@@ -1,0 +1,295 @@
+<title>fiberstate benchmark</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single reading column like a methods note; charts as full-width figures with numbered captions */
+:root {
+  --bg: #fbfbf9; --panel: #f2f3ef; --fg: #15171a; --fg2: #4c5057; --muted: #7a7e85; --rule: #dcded8;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --good: #1f7a3a; --bad: #b3261e;
+  --display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #161816; --panel: #1f2220; --fg: #eceee9; --fg2: #c1c5bd; --muted: #8c918a; --rule: #333833;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --good: #5cc27a; --bad: #f08a80; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #161816; --panel: #1f2220; --fg: #eceee9; --fg2: #c1c5bd; --muted: #8c918a; --rule: #333833;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --good: #5cc27a; --bad: #f08a80; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--body); }
+.wrap { max-width: 860px; margin: 0 auto; padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 40px; }
+.wrap > * { min-width: 0; }
+h1 { font: 600 2.1rem/1.15 var(--display); margin: 0; text-wrap: balance; }
+h2 { font: 600 1.35rem/1.3 var(--display); margin: 0 0 8px; text-wrap: balance; }
+p { margin: 0; max-width: 68ch; }
+.lede { color: var(--fg2); font-size: 1.05rem; margin-top: 12px; }
+.eyebrow { font: 500 .72rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+section { display: grid; gap: 14px; }
+code, .mono { font-family: var(--mono); font-size: .88em; }
+.findings { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.finding { background: var(--bg); padding: 16px; display: grid; gap: 4px; align-content: start; }
+.finding .num { font: 600 1.7rem/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.finding .vs { font: .82rem var(--mono); color: var(--muted); }
+.finding p { color: var(--fg2); font-size: .9rem; }
+figure { margin: 0; display: grid; gap: 10px; }
+figcaption { font-size: .88rem; color: var(--fg2); max-width: 70ch; }
+figcaption b { color: var(--fg); font-weight: 600; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.chart { position: relative; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .ttl { font: 600 .85rem var(--body); margin-bottom: 4px; }
+.axis text { fill: var(--muted); font: 11px var(--mono); }
+.axis line, .axis path { stroke: var(--rule); }
+.grid line { stroke: var(--rule); stroke-dasharray: 2 3; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .85rem; color: var(--fg2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.legend i.dash { background: none !important; border-top: 2px dashed currentColor; height: 0; }
+.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--rule); padding: 8px 10px; font: 12px/1.5 var(--mono); color: var(--fg); white-space: nowrap; z-index: 2; }
+.tbl { overflow-x: auto; border: 1px solid var(--rule); }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; font-variant-numeric: tabular-nums; }
+th, td { padding: 8px 12px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { font: 500 .72rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--panel); }
+tbody tr:last-child td { border-bottom: 0; }
+td.best { font-weight: 600; }
+td.na { color: var(--muted); }
+tr.ours td:first-child { font-weight: 600; }
+.note { border-left: 3px solid var(--rule); padding-left: 14px; color: var(--fg2); font-size: .92rem; display: grid; gap: 8px; }
+ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 68ch; }
+.pill { font: 500 .72rem var(--mono); padding: 2px 8px; border: 1px solid currentColor; border-radius: 999px; }
+.pill.good { color: var(--good); } .pill.bad { color: var(--bad); } .pill.mid { color: var(--muted); }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Fiber-seq · single-molecule chromatin · simulation benchmark</div>
+    <h1>fiberstate: sequence-aware nucleosome and footprint calling</h1>
+    <p class="lede">A new caller that labels every base of every Fiber-seq molecule as linker, nucleosome or TF footprint, benchmarked against fibertools-rs v0.13.1 and two classic baselines on simulated molecules with known ground truth, then compared with fibertools, FiberHMM 3.0.2 and HiddenFoot on real GM12878 and K562 Fiber-seq data at CTCF and REST sites labelled by ChIP-seq.</p>
+  </header>
+
+  <section>
+    <div class="eyebrow">Simulation headline (m6A sensitivity 0.6, false-positive rate 0.02); see the real-data section for how these held up</div>
+    <div class="findings" id="findings"></div>
+  </section>
+
+  <section>
+    <h2>What the tool does differently</h2>
+    <ul>
+      <li><b>G/C bases are treated as no evidence.</b> Hia5 only methylates A, so a GC-rich stretch is m6A-free whether or not it is wrapped. Gap-based callers read that silence as protection.</li>
+      <li><b>Methylation rate is learned per molecule.</b> A short EM re-estimates the accessible and protected m6A rates for each fiber, so poorly methylated fibers don't create long fake nucleosomes.</li>
+      <li><b>Nucleosomes and footprints are decoded jointly</b> with an explicit-duration hidden semi-Markov model (~147 bp nucleosomes plus hexasomes, 8–90 bp footprints), and each call carries a posterior confidence.</li>
+      <li><b>Co-occupancy is conditioned on accessibility.</b> Two sites inside the same open element look correlated just because they open together; fiberstate down-weights molecules where either site is nucleosome-bound.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Robustness to methylation efficiency</h2>
+    <figure>
+      <div class="legend" id="legend1"></div>
+      <div class="grid2">
+        <div class="chart" id="c_sens_nuc"></div>
+        <div class="chart" id="c_sens_island"></div>
+      </div>
+      <figcaption><b>Figure 1.</b> Nucleosome F1 and false nucleosomes inside GC-rich islands as per-fiber m6A sensitivity varies. Mean of 3 simulation seeds, 360 fibers × 12 kb each. Lower is better on the right.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Robustness to false-positive m6A calls</h2>
+    <figure>
+      <div class="grid2">
+        <div class="chart" id="c_fp_nuc"></div>
+        <div class="chart" id="c_sens_foot"></div>
+      </div>
+      <figcaption><b>Figure 2.</b> Left: nucleosome F1 as the m6A false-positive rate inside protected DNA rises; a single spurious call splits a gap-defined nucleosome. Right: TF footprint F1 across sensitivities (fibertools does not call footprints de novo, so it is absent).</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Full results at the default condition</h2>
+    <div class="tbl"><table id="tbl_main"></table></div>
+    <p style="color:var(--fg2);font-size:.88rem">Ablations: <span class="mono">−seq</span> treats G/C as unmethylated observations; <span class="mono">−EM</span> keeps global methylation rates. Occupancy error is the mean absolute difference between estimated and true per-site TF occupancy. Runtime is single-core wall time per 12 kb fiber.</p>
+  </section>
+
+  <section>
+    <h2>Detecting cooperative TF binding</h2>
+    <div class="tbl"><table id="tbl_co"></table></div>
+    <p style="color:var(--fg2);font-size:.88rem" id="co_note"></p>
+  </section>
+
+  <section>
+    <h2>TF binding at ChIP-seq-labelled motif sites</h2>
+    <p>Strong motif matches on chr19 (CTCF) or eight chromosomes (REST, NRF1), labelled bound (within 100 bp of an ENCODE IDR peak summit) or unbound (no peak within 2 kb), with unbound sites matched to the bound ones on motif score. Each tool's per-site share of footprinted molecules is scored by AUROC; p-values in brackets are paired DeLong tests of fiberstate against each tool. "Weak" and "strong ChIP" are the lowest and highest thirds of bound sites by ChIP signal, each scored against all unbound sites. fiberstate's footprint threshold was chosen on the CTCF sites; <b>REST and NRF1 were run afterwards with no retuning</b>. fibertools is told the motif positions; HiddenFoot is given the motif matrix.</p>
+    <div class="tbl"><table id="tbl_tf"></table></div>
+    <h3 style="margin-top:1.6rem">At a matched false-positive rate</h3>
+    <p>Site AUROC only ranks sites; it does not reward a caller for making fewer false calls. Here each tool's per-molecule score (fiberstate: mean footprint posterior over the motif; FiberHMM: quality of a footprint covering the motif; HiddenFoot: motif posterior; fibertools: its yes/no call) is cut so that exactly <b>1% of molecules at unbound sites</b> are called footprinted, and the table shows the share of molecules at bound sites called at that cut. Tied scores and yes/no calls are read off each tool's ROC curve. Brackets: fiberstate minus that tool, in percentage points, with a site bootstrap p-value.</p>
+    <div class="tbl"><table id="tbl_fpr"></table></div>
+  </section>
+
+  <section>
+    <h2>Real data: GM12878 Fiber-seq</h2>
+    <p>No ground truth exists on real data, so these checks are indirect. <b>GM12878 chr19:45.0–45.5 Mb</b>: 3,125 molecules (median 16.4 kb, ~97× coverage) streamed from the public FIRE data, compared with the 255 FIRE accessibility peaks for that region. Accessibility is also scored against ENCODE DNase-seq peaks.</p>
+    <p><b>Enzyme sequence preference.</b> In confidently open DNA, m6A calls at A-tracts (AAAAA, TTAAT, TAAAA) are 15–25× rarer than average, and A's flanked by G/C are marked about 1.4× more. Tables learned separately on the two datasets agree closely (r = 0.987 on log weights). fiberstate now uses this table by default. The GM12878 rows below are all computed by one shared scoring script from each tool's output BAM.</p>
+    <div class="tbl"><table id="tbl_real"></table></div>
+    <p style="color:var(--fg2);font-size:.88rem">FIRE peaks are built from fibertools output, which should favour fibertools on the accessibility check. Nucleosome sizes near 147 bp partly reflect fiberstate's built-in size prior.</p>
+  </section>
+
+  <section>
+    <h2>Where it loses, and what is not tested</h2>
+    <div class="note" id="caveats"></div>
+  </section>
+
+  <section>
+    <h2>Setup</h2>
+    <ul id="setup"></ul>
+  </section>
+</div>
+
+<script>
+const S = __SUMMARY__;
+const SERIES = [
+  { key: "fiberstate", label: "fiberstate (new)", color: "var(--s1)" },
+  { key: "fibertools", label: "fibertools-rs v0.13.1", color: "var(--s2)" },
+  { key: "gap_threshold", label: "Gap threshold (tuned)", color: "var(--s3)" },
+  { key: "naive_hmm", label: "Per-base HMM (tuned)", color: "var(--s4)" },
+];
+const NAMES = { fiberstate: "fiberstate", fiberstate_noseq: "fiberstate −seq", fiberstate_noEM: "fiberstate −EM",
+  fibertools: "fibertools-rs", gap_threshold: "Gap threshold", naive_hmm: "Per-base HMM" };
+const at = (sec, m, x, k) => { const r = (S[sec][m] || []).find(d => Math.abs(d.x - x) < 1e-9); return r && r[k] ? r[k][0] : NaN; };
+
+function legend(el) {
+  el.innerHTML = SERIES.map(s => `<span><i style="background:${s.color}"></i>${s.label}</span>`).join("");
+}
+
+function lineChart(id, sec, metric, opts) {
+  const el = document.getElementById(id);
+  const W = 400, H = 250, m = { l: 44, r: 12, t: 8, b: 36 };
+  const series = SERIES.filter(s => S[sec][s.key] && S[sec][s.key][0][metric]);
+  const xs = S[sec].fiberstate.map(d => d.x);
+  let ys = [];
+  series.forEach(s => S[sec][s.key].forEach(d => ys.push(d[metric][0])));
+  let y0 = opts.y0 ?? Math.min(...ys), y1 = opts.y1 ?? Math.max(...ys);
+  const xi = i => m.l + (W - m.l - m.r) * i / (xs.length - 1);
+  const yv = v => m.t + (H - m.t - m.b) * (1 - (v - y0) / (y1 - y0));
+  const ticks = opts.ticks;
+  let g = `<g class="grid">${ticks.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${yv(t)}" y2="${yv(t)}"/>`).join("")}</g>`;
+  g += `<g class="axis">${ticks.map(t => `<text x="${m.l - 6}" y="${yv(t) + 4}" text-anchor="end">${opts.fmt(t)}</text>`).join("")}`;
+  g += xs.map((x, i) => `<text x="${xi(i)}" y="${H - m.b + 16}" text-anchor="middle">${x}</text>`).join("");
+  g += `<text x="${(m.l + W - m.r) / 2}" y="${H - 4}" text-anchor="middle">${opts.xlabel}</text></g>`;
+  series.forEach(s => {
+    const pts = S[sec][s.key].map((d, i) => [xi(i), yv(Math.max(y0, Math.min(y1, d[metric][0])))]);
+    g += `<path d="M${pts.map(p => p.join(",")).join("L")}" fill="none" stroke="${s.color}" stroke-width="2"/>`;
+    g += pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${s.color}" stroke="var(--bg)" stroke-width="2"/>`).join("");
+  });
+  g += `<line class="cross" x1="0" x2="0" y1="${m.t}" y2="${H - m.b}" stroke="var(--muted)" stroke-width="1" visibility="hidden"/>`;
+  el.innerHTML = `<div class="ttl">${opts.title}</div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opts.title}">${g}<rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}" fill="transparent"/></svg><div class="tip" hidden></div>`;
+  const svg = el.querySelector("svg"), tip = el.querySelector(".tip"), cross = svg.querySelector(".cross");
+  svg.addEventListener("pointermove", e => {
+    const b = svg.getBoundingClientRect();
+    const px = (e.clientX - b.left) * W / b.width;
+    let i = Math.round((px - m.l) / ((W - m.l - m.r) / (xs.length - 1)));
+    i = Math.max(0, Math.min(xs.length - 1, i));
+    cross.setAttribute("x1", xi(i)); cross.setAttribute("x2", xi(i)); cross.setAttribute("visibility", "visible");
+    tip.innerHTML = `${opts.xlabel} = ${xs[i]}<br>` + series.map(s => {
+      const d = S[sec][s.key][i][metric]; return `<span style="color:${s.color}">●</span> ${s.label}: ${opts.fmtTip(d[0])} ± ${opts.fmtTip(d[1])}`; }).join("<br>");
+    tip.hidden = false;
+    const left = xi(i) * b.width / W;
+    tip.style.left = Math.min(left + 12, b.width - tip.offsetWidth) + "px";
+    tip.style.top = "24px";
+  });
+  svg.addEventListener("pointerleave", () => { tip.hidden = true; cross.setAttribute("visibility", "hidden"); });
+}
+
+const f3 = v => v.toFixed(3), f2 = v => v.toFixed(2), f1 = v => v.toFixed(1);
+legend(document.getElementById("legend1"));
+lineChart("c_sens_nuc", "sensitivity", "nuc_f1", { title: "Nucleosome F1", y0: 0.6, y1: 1, ticks: [0.6, 0.7, 0.8, 0.9, 1], fmt: f1, fmtTip: f3, xlabel: "m6A sensitivity" });
+lineChart("c_sens_island", "sensitivity", "false_nuc_per_10kb_island", { title: "False nucleosomes per 10 kb of GC island", y0: 0, ticks: (() => { const mx = Math.max(...SERIES.flatMap(s => (S.sensitivity[s.key]||[]).map(d => d.false_nuc_per_10kb_island ? d.false_nuc_per_10kb_island[0] : 0))); const step = mx > 40 ? 20 : mx > 20 ? 10 : 5; const t = []; for (let v = 0; v <= mx + step; v += step) t.push(v); return t; })(), fmt: v => v, fmtTip: f2, xlabel: "m6A sensitivity" });
+lineChart("c_fp_nuc", "fp_rate", "nuc_f1", { title: "Nucleosome F1", y0: 0.4, y1: 1, ticks: [0.4, 0.6, 0.8, 1], fmt: f1, fmtTip: f3, xlabel: "m6A false-positive rate" });
+lineChart("c_sens_foot", "sensitivity", "foot_f1", { title: "TF footprint F1", y0: 0, y1: 1, ticks: [0, 0.25, 0.5, 0.75, 1], fmt: v => v, fmtTip: f3, xlabel: "m6A sensitivity" });
+
+// Findings
+(function () {
+  const g = (m, k) => at("sensitivity", m, 0.6, k);
+  const fpF = m => at("fp_rate", m, 0.08, "nuc_f1");
+  const cards = [
+    [f3(g("fiberstate", "nuc_f1")), `fibertools ${f3(g("fibertools", "nuc_f1"))}`, "Nucleosome F1. Both are strong; fiberstate is tighter on dyad position and recall."],
+    [f2(g("fiberstate", "false_nuc_per_10kb_island")), `fibertools ${f2(g("fibertools", "false_nuc_per_10kb_island"))}`, "False nucleosomes per 10 kb of GC-rich island, where gap-based callers mistake A/T-poor DNA for protection."],
+    [f3(fpF("fiberstate")), `fibertools ${f3(fpF("fibertools"))}`, "Nucleosome F1 when 8% of protected A/T carry spurious m6A calls."],
+    [f3(g("fiberstate", "foot_f1")), `best baseline ${f3(Math.max(g("gap_threshold", "foot_f1"), g("naive_hmm", "foot_f1")))}`, "TF footprint F1, de novo, without motif annotation."],
+  ];
+  document.getElementById("findings").innerHTML = cards.map(c => `<div class="finding"><div class="num">${c[0]}</div><div class="vs">${c[1]}</div><p>${c[2]}</p></div>`).join("");
+})();
+
+// Main table
+(function () {
+  const cols = [["nuc_precision", "Nuc prec", f3, 1], ["nuc_recall", "Nuc rec", f3, 1], ["nuc_f1", "Nuc F1", f3, 1],
+    ["dyad_median_err", "Dyad err (bp)", f1, -1], ["foot_f1", "Foot F1", f3, 1], ["false_nuc_per_10kb_island", "False nuc / 10 kb island", f2, -1],
+    ["occupancy_mae", "Occupancy err", f3, -1], ["ms_per_read", "ms / fiber", f1, 0]];
+  const rows = ["fiberstate", "fiberstate_noseq", "fiberstate_noEM", "fibertools", "gap_threshold", "naive_hmm"];
+  const best = {};
+  cols.forEach(([k, , , dir]) => { if (!dir) return; const v = rows.map(r => at("sensitivity", r, 0.6, k)).filter(x => !isNaN(x)); best[k] = dir > 0 ? Math.max(...v) : Math.min(...v); });
+  let h = `<thead><tr><th>Method</th>${cols.map(c => `<th>${c[1]}</th>`).join("")}</tr></thead><tbody>`;
+  rows.forEach(r => {
+    h += `<tr class="${r === "fiberstate" ? "ours" : ""}"><td>${NAMES[r]}</td>`;
+    cols.forEach(([k, , fmt]) => { const v = at("sensitivity", r, 0.6, k);
+      h += isNaN(v) ? `<td class="na">n/a</td>` : `<td class="${Math.abs(v - best[k]) < 1e-12 ? "best" : ""}">${fmt(v)}</td>`; });
+    h += "</tr>";
+  });
+  document.getElementById("tbl_main").innerHTML = h + "</tbody>";
+})();
+
+// Co-occupancy table
+(function () {
+  const C = S.cooccupancy;
+  const rows = [["fiberstate|conditioned", "fiberstate, accessibility-conditioned"], ["fiberstate|unconditioned", "fiberstate, unconditioned"],
+    ["gap_threshold|conditioned", "Gap threshold, conditioned"], ["gap_threshold|unconditioned", "Gap threshold, unconditioned"]];
+  let h = `<thead><tr><th>Method</th><th>AUROC</th><th>Power at z>1.645</th><th>False discovery rate</th><th>Calls (true / false)</th></tr></thead><tbody>`;
+  rows.forEach(([k, n]) => { const d = C[k]; if (!d) return;
+    h += `<tr class="${k.startsWith("fiberstate|cond") ? "ours" : ""}"><td>${n}</td><td>${f3(d.auroc)}</td><td>${f3(d.power)}</td><td>${f3(d.fdr)}</td><td>${d.tp} / ${d.fp}</td></tr>`; });
+  document.getElementById("tbl_co").innerHTML = h + "</tbody>";
+  const any = Object.values(C)[0];
+  document.getElementById("co_note").textContent = `${any.n_pairs} site pairs, each inside one regulatory element; ${any.n_coupled} truly cooperative, the rest bind independently given that the element is open. 50 loci × 60 fibers. Calls: positive coupling at one-sided p < 0.05 (Fisher's exact test), among pairs where both sites are bound and unbound on at least 3 molecules (version 0.5; earlier versions used a normal approximation whose fixed pseudo-counts made rarely bound pairs look coupled). The per-base HMM never calls footprints, so none of its pairs is testable.`;
+})();
+
+const TF = __TF__;
+(() => {
+  const names = ["fiberstate", "fibertools", "FiberHMM", "HiddenFoot"];
+  const pk = ["", "fibertools_footprint", "FiberHMM", "HiddenFoot"];
+  const fp = p => p < 0.001 ? p.toExponential(0) : p < 0.01 ? p.toFixed(3) : p.toFixed(2);
+  let h = `<thead><tr><th style="text-align:left">Set</th><th style="text-align:left">Measure</th>${names.map(n => `<th>${n}</th>`).join("")}</tr></thead><tbody>`;
+  for (const [set, d] of Object.entries(TF.sets)) {
+    const best = Math.max(...d.auroc);
+    const rows = [["AUROC (p)", d.auroc.map((v, i) => `${v === best ? "<b>" : ""}${v.toFixed(3)}${v === best ? "</b>" : ""}${i ? ` <span style="color:var(--muted)">(${fp(d.p[pk[i]])})</span>` : ""}`)],
+      ["False calls, unbound", d.unbound.map(v => v.toFixed(1) + "%")],
+      ["Footprinted, bound", d.bound.map(v => v.toFixed(1) + "%")],
+      ...(d.weak ? [["AUROC, weak ChIP", d.weak.map(v => v.toFixed(3))], ["AUROC, strong ChIP", d.strong.map(v => v.toFixed(3))]] : [])];
+    rows.forEach((r, j) => { h += `<tr>${j === 0 ? `<td rowspan="${rows.length}" style="text-align:left;white-space:normal;min-width:110px"><b>${set}</b><br><span style="color:var(--muted);font-size:.8rem">${d.sites} sites<br>unmarked motif ${TF.raw_auroc[set].toFixed(3)}</span></td>` : ""}<td style="text-align:left">${r[0]}</td>${r[1].map(x => `<td>${x}</td>`).join("")}</tr>`; });
+  }
+  document.getElementById("tbl_tf").innerHTML = h + "</tbody>";
+})();
+
+const MF = __MFPR__;
+(() => {
+  const names = ["fiberstate", "fibertools", "FiberHMM", "HiddenFoot"];
+  let h = `<thead><tr><th style="text-align:left">Set</th>${names.map(n => `<th>${n}</th>`).join("")}</tr></thead><tbody>`;
+  for (const [set, d] of Object.entries(MF.sets)) {
+    const best = Math.max(...d.at1);
+    h += `<tr><td style="text-align:left"><b>${set}</b></td>` + d.at1.map((v, i) => {
+      const k = MF.tools[i], df = d.diff[k];
+      const b = v === best ? ["<b>", "</b>"] : ["", ""];
+      return `<td>${b[0]}${v.toFixed(1)}%${b[1]}${df ? ` <span style="color:var(--muted)">(${df[0] > 0 ? "+" : ""}${df[0].toFixed(1)}, p ${df[3].startsWith("<") ? df[3] : "= " + df[3]})</span>` : ""}</td>`;
+    }).join("") + `</tr>`;
+  }
+  document.getElementById("tbl_fpr").innerHTML = h + "</tbody>";
+})();
+
+const R = __REAL__;
+document.getElementById("tbl_real").innerHTML = `<thead><tr><th>Check</th><th>fiberstate</th><th>fibertools</th><th>FiberHMM 3.0.2</th><th style="text-align:left">Reading</th></tr></thead><tbody>` +
+  R.map(r => `<tr><td style="white-space:normal;min-width:220px">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="${/pending|not run/.test(r[3]) ? "na" : ""}">${r[3]}</td><td style="text-align:left"><span class="pill ${r[4]}">${r[5]}</span></td></tr>`).join("") + `</tbody>`;
+document.getElementById("caveats").innerHTML = __CAVEATS__;
+document.getElementById("setup").innerHTML = __SETUP__;
+</script>

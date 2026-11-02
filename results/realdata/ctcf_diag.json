@@ -1,0 +1,869 @@
+{
+ "bound_31": {
+  "chip": 267.38,
+  "n_molecules": 87,
+  "breakdown": {
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 56,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 5.0,
+    "median_gap_to_mark_right": 15.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 16,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 8.0,
+    "median_gap_to_mark_right": 15.0
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 5,
+    "median_seg_len": 307.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 269.0,
+    "median_gap_to_mark_right": 96.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 4,
+    "median_seg_len": 134.5,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 60.5,
+    "median_gap_to_mark_right": 66.0
+   },
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 2,
+    "median_seg_len": 50.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 18.5,
+    "median_gap_to_mark_right": 15.0
+   },
+   "fiberstate=footprint | FiberHMM=open": {
+    "n": 2,
+    "median_seg_len": 31.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 5.0,
+    "median_gap_to_mark_right": 17.5
+   },
+   "fiberstate=nucleosome | FiberHMM=open": {
+    "n": 1,
+    "median_seg_len": 147.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 5.0,
+    "median_gap_to_mark_right": 129.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 1,
+    "median_seg_len": null,
+    "median_marks_in_motif": 1.0,
+    "median_gap_to_mark_left": 52.0,
+    "median_gap_to_mark_right": 191.0
+   }
+  }
+ },
+ "bound_51": {
+  "chip": 106.91,
+  "n_molecules": 72,
+  "breakdown": {
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 23,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 11.0,
+    "median_gap_to_mark_right": 9.0
+   },
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 17,
+    "median_seg_len": null,
+    "median_marks_in_motif": 1.0,
+    "median_gap_to_mark_left": 3.0,
+    "median_gap_to_mark_right": 4.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 13,
+    "median_seg_len": 148.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 68.0,
+    "median_gap_to_mark_right": 48.0
+   },
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 9,
+    "median_seg_len": 31.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 11.0,
+    "median_gap_to_mark_right": 9.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 4,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 120.0,
+    "median_gap_to_mark_right": 11.5
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 4,
+    "median_seg_len": 333.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 115.5,
+    "median_gap_to_mark_right": 90.5
+   },
+   "fiberstate=nucleosome | FiberHMM=open": {
+    "n": 1,
+    "median_seg_len": 147.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 11.0,
+    "median_gap_to_mark_right": 4.0
+   },
+   "fiberstate=nucleosome | FiberHMM=footprint": {
+    "n": 1,
+    "median_seg_len": 93.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 24.0,
+    "median_gap_to_mark_right": 42.0
+   }
+  }
+ },
+ "bound_58": {
+  "chip": 159.58,
+  "n_molecules": 97,
+  "breakdown": {
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 72,
+    "median_seg_len": 50.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 17.0,
+    "median_gap_to_mark_right": 24.0
+   },
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 10,
+    "median_seg_len": null,
+    "median_marks_in_motif": 4.0,
+    "median_gap_to_mark_left": 5.0,
+    "median_gap_to_mark_right": 1.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 4,
+    "median_seg_len": 147.5,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 25.5,
+    "median_gap_to_mark_right": 6.5
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 4,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 22.0,
+    "median_gap_to_mark_right": 27.0
+   },
+   "fiberstate=footprint | FiberHMM=nucleosome": {
+    "n": 2,
+    "median_seg_len": 53.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 21.0,
+    "median_gap_to_mark_right": 24.0
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 2,
+    "median_seg_len": 767.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 492.0,
+    "median_gap_to_mark_right": 302.5
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 1,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 38.0,
+    "median_gap_to_mark_right": 37.0
+   },
+   "fiberstate=nucleosome | FiberHMM=footprint": {
+    "n": 1,
+    "median_seg_len": 91.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 54.0,
+    "median_gap_to_mark_right": 24.0
+   },
+   "fiberstate=nucleosome | FiberHMM=open": {
+    "n": 1,
+    "median_seg_len": 128.0,
+    "median_marks_in_motif": 2.0,
+    "median_gap_to_mark_left": 39.0,
+    "median_gap_to_mark_right": 4.0
+   }
+  }
+ },
+ "bound_69": {
+  "chip": 137.28,
+  "n_molecules": 89,
+  "breakdown": {
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 48,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 4.0,
+    "median_gap_to_mark_right": 7.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 26,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 4.0,
+    "median_gap_to_mark_right": 16.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 6,
+    "median_seg_len": 147.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 98.0,
+    "median_gap_to_mark_right": 21.0
+   },
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 3,
+    "median_seg_len": 38.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 12.0,
+    "median_gap_to_mark_right": 21.0
+   },
+   "fiberstate=nucleosome | FiberHMM=footprint": {
+    "n": 2,
+    "median_seg_len": 131.0,
+    "median_marks_in_motif": 0.5,
+    "median_gap_to_mark_left": 12.0,
+    "median_gap_to_mark_right": 18.0
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 2,
+    "median_seg_len": 364.5,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 132.5,
+    "median_gap_to_mark_right": 219.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 2,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.5,
+    "median_gap_to_mark_left": 19.5,
+    "median_gap_to_mark_right": 245.0
+   }
+  }
+ },
+ "bound_70": {
+  "chip": 108.73,
+  "n_molecules": 81,
+  "breakdown": {
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 25,
+    "median_seg_len": 139.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 31.0,
+    "median_gap_to_mark_right": 55.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 23,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 15.0,
+    "median_gap_to_mark_right": 7.0
+   },
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 16,
+    "median_seg_len": null,
+    "median_marks_in_motif": 2.0,
+    "median_gap_to_mark_left": 1.0,
+    "median_gap_to_mark_right": 2.0
+   },
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 10,
+    "median_seg_len": 36.5,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 19.0,
+    "median_gap_to_mark_right": 10.5
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 4,
+    "median_seg_len": 296.5,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 114.0,
+    "median_gap_to_mark_right": 110.5
+   },
+   "fiberstate=nucleosome | FiberHMM=footprint": {
+    "n": 2,
+    "median_seg_len": 145.0,
+    "median_marks_in_motif": 0.5,
+    "median_gap_to_mark_left": 32.0,
+    "median_gap_to_mark_right": 10.5
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 1,
+    "median_seg_len": null,
+    "median_marks_in_motif": 2.0,
+    "median_gap_to_mark_left": 36.0,
+    "median_gap_to_mark_right": 26.0
+   }
+  }
+ },
+ "bound_75": {
+  "chip": 209.93,
+  "n_molecules": 106,
+  "breakdown": {
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 63,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 7.0,
+    "median_gap_to_mark_right": 11.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 38,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 15.0,
+    "median_gap_to_mark_right": 11.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 3,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 15.0,
+    "median_gap_to_mark_right": 33.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 2,
+    "median_seg_len": 123.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 53.5,
+    "median_gap_to_mark_right": 59.0
+   }
+  }
+ },
+ "bound_82": {
+  "chip": 112.24,
+  "n_molecules": 78,
+  "breakdown": {
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 54,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 2.0,
+    "median_gap_to_mark_right": 3.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 11,
+    "median_seg_len": 139.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 35.0,
+    "median_gap_to_mark_right": 40.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 6,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 16.5,
+    "median_gap_to_mark_right": 7.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 3,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 145.0,
+    "median_gap_to_mark_right": 16.0
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 2,
+    "median_seg_len": 249.5,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 112.5,
+    "median_gap_to_mark_right": 124.0
+   },
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 2,
+    "median_seg_len": 32.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 5.0,
+    "median_gap_to_mark_right": 16.5
+   }
+  }
+ },
+ "bound_91": {
+  "chip": 119.93,
+  "n_molecules": 129,
+  "breakdown": {
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 84,
+    "median_seg_len": 40.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 15.0,
+    "median_gap_to_mark_right": 16.0
+   },
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 18,
+    "median_seg_len": null,
+    "median_marks_in_motif": 2.5,
+    "median_gap_to_mark_left": 2.0,
+    "median_gap_to_mark_right": 4.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 7,
+    "median_seg_len": null,
+    "median_marks_in_motif": 1.0,
+    "median_gap_to_mark_left": 3.0,
+    "median_gap_to_mark_right": 16.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 6,
+    "median_seg_len": 149.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 37.5,
+    "median_gap_to_mark_right": 18.5
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 5,
+    "median_seg_len": 446.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 15.0,
+    "median_gap_to_mark_right": 43.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 4,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 25.0,
+    "median_gap_to_mark_right": 24.0
+   },
+   "fiberstate=nucleosome | FiberHMM=footprint": {
+    "n": 2,
+    "median_seg_len": 134.5,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 14.5,
+    "median_gap_to_mark_right": 30.5
+   },
+   "fiberstate=footprint | FiberHMM=nucleosome": {
+    "n": 2,
+    "median_seg_len": 34.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 7.0,
+    "median_gap_to_mark_right": 19.0
+   },
+   "fiberstate=footprint | FiberHMM=open": {
+    "n": 1,
+    "median_seg_len": 28.0,
+    "median_marks_in_motif": 1.0,
+    "median_gap_to_mark_left": 2.0,
+    "median_gap_to_mark_right": 16.0
+   }
+  }
+ },
+ "bound_109": {
+  "chip": 230.1,
+  "n_molecules": 129,
+  "breakdown": {
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 86,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 18.0,
+    "median_gap_to_mark_right": 4.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 14,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 18.0,
+    "median_gap_to_mark_right": 9.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 9,
+    "median_seg_len": 148.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 14.0,
+    "median_gap_to_mark_right": 12.0
+   },
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 8,
+    "median_seg_len": 41.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 20.0,
+    "median_gap_to_mark_right": 12.0
+   },
+   "fiberstate=footprint | FiberHMM=open": {
+    "n": 7,
+    "median_seg_len": 31.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 18.0,
+    "median_gap_to_mark_right": 4.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 5,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 14.0,
+    "median_gap_to_mark_right": 4.0
+   }
+  }
+ },
+ "bound_110": {
+  "chip": 154.94,
+  "n_molecules": 80,
+  "breakdown": {
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 33,
+    "median_seg_len": null,
+    "median_marks_in_motif": 1.0,
+    "median_gap_to_mark_left": 6.0,
+    "median_gap_to_mark_right": 9.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 27,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 10.0,
+    "median_gap_to_mark_right": 9.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 11,
+    "median_seg_len": 132.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 10.0,
+    "median_gap_to_mark_right": 76.0
+   },
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 4,
+    "median_seg_len": 31.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 11.0,
+    "median_gap_to_mark_right": 9.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 2,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.5,
+    "median_gap_to_mark_left": 179.5,
+    "median_gap_to_mark_right": 141.0
+   },
+   "fiberstate=footprint | FiberHMM=open": {
+    "n": 1,
+    "median_seg_len": 28.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 6.0,
+    "median_gap_to_mark_right": 9.0
+   },
+   "fiberstate=nucleosome | FiberHMM=footprint": {
+    "n": 1,
+    "median_seg_len": 111.0,
+    "median_marks_in_motif": 1.0,
+    "median_gap_to_mark_left": 61.0,
+    "median_gap_to_mark_right": 37.0
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 1,
+    "median_seg_len": 413.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 137.0,
+    "median_gap_to_mark_right": 263.0
+   }
+  }
+ },
+ "bound_202": {
+  "chip": 145.59,
+  "n_molecules": 97,
+  "breakdown": {
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 69,
+    "median_seg_len": 41.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 19.0,
+    "median_gap_to_mark_right": 13.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 8,
+    "median_seg_len": 145.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 64.5,
+    "median_gap_to_mark_right": 57.0
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 7,
+    "median_seg_len": 302.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 131.0,
+    "median_gap_to_mark_right": 161.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 6,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 19.5,
+    "median_gap_to_mark_right": 16.0
+   },
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 5,
+    "median_seg_len": null,
+    "median_marks_in_motif": 3.0,
+    "median_gap_to_mark_left": 31.0,
+    "median_gap_to_mark_right": 6.0
+   },
+   "fiberstate=footprint | FiberHMM=nucleosome": {
+    "n": 1,
+    "median_seg_len": 46.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 20.0,
+    "median_gap_to_mark_right": 16.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 1,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 18.0,
+    "median_gap_to_mark_right": 19.0
+   }
+  }
+ },
+ "bound_218": {
+  "chip": 294.92,
+  "n_molecules": 87,
+  "breakdown": {
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 48,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 2.0,
+    "median_gap_to_mark_right": 11.0
+   },
+   "fiberstate=footprint | FiberHMM=open": {
+    "n": 13,
+    "median_seg_len": 31.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 2.0,
+    "median_gap_to_mark_right": 24.0
+   },
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 12,
+    "median_seg_len": 33.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 7.5,
+    "median_gap_to_mark_right": 24.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 7,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 9.0,
+    "median_gap_to_mark_right": 11.0
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 3,
+    "median_seg_len": 312.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 24.0,
+    "median_gap_to_mark_right": 249.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 1,
+    "median_seg_len": 112.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 11.0,
+    "median_gap_to_mark_right": 35.0
+   },
+   "fiberstate=unresolved | FiberHMM=footprint": {
+    "n": 1,
+    "median_seg_len": 312.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 24.0,
+    "median_gap_to_mark_right": 24.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 1,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 18.0,
+    "median_gap_to_mark_right": 37.0
+   },
+   "fiberstate=nucleosome | FiberHMM=open": {
+    "n": 1,
+    "median_seg_len": 133.0,
+    "median_marks_in_motif": 1.0,
+    "median_gap_to_mark_left": 2.0,
+    "median_gap_to_mark_right": 7.0
+   }
+  }
+ },
+ "unbound_3": {
+  "chip": 0.0,
+  "n_molecules": 132,
+  "breakdown": {
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 38,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 7.0,
+    "median_gap_to_mark_right": 11.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 29,
+    "median_seg_len": 142.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 33.0,
+    "median_gap_to_mark_right": 31.0
+   },
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 25,
+    "median_seg_len": 31.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 7.0,
+    "median_gap_to_mark_right": 11.0
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 24,
+    "median_seg_len": 310.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 197.5,
+    "median_gap_to_mark_right": 81.0
+   },
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 8,
+    "median_seg_len": null,
+    "median_marks_in_motif": 2.0,
+    "median_gap_to_mark_left": 1.0,
+    "median_gap_to_mark_right": 2.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 5,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 184.0,
+    "median_gap_to_mark_right": 11.0
+   },
+   "fiberstate=nucleosome | FiberHMM=footprint": {
+    "n": 2,
+    "median_seg_len": 145.5,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 8.0,
+    "median_gap_to_mark_right": 16.5
+   },
+   "fiberstate=nucleosome | FiberHMM=open": {
+    "n": 1,
+    "median_seg_len": 147.0,
+    "median_marks_in_motif": 1.0,
+    "median_gap_to_mark_left": 21.0,
+    "median_gap_to_mark_right": 4.0
+   }
+  }
+ },
+ "unbound_75": {
+  "chip": 0.0,
+  "n_molecules": 92,
+  "breakdown": {
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 31,
+    "median_seg_len": null,
+    "median_marks_in_motif": 1.0,
+    "median_gap_to_mark_left": 1.0,
+    "median_gap_to_mark_right": 8.0
+   },
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 19,
+    "median_seg_len": 142.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 27.0,
+    "median_gap_to_mark_right": 42.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 18,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 13.0,
+    "median_gap_to_mark_right": 10.0
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 9,
+    "median_seg_len": 306.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 177.0,
+    "median_gap_to_mark_right": 92.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 8,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 13.5,
+    "median_gap_to_mark_right": 14.0
+   },
+   "fiberstate=nucleosome | FiberHMM=open": {
+    "n": 6,
+    "median_seg_len": 146.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 1.0,
+    "median_gap_to_mark_right": 105.5
+   },
+   "fiberstate=nucleosome | FiberHMM=footprint": {
+    "n": 1,
+    "median_seg_len": 100.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 66.0,
+    "median_gap_to_mark_right": 21.0
+   }
+  }
+ },
+ "unbound_192": {
+  "chip": 0.0,
+  "n_molecules": 125,
+  "breakdown": {
+   "fiberstate=nucleosome | FiberHMM=nucleosome": {
+    "n": 55,
+    "median_seg_len": 146.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 47.0,
+    "median_gap_to_mark_right": 60.0
+   },
+   "fiberstate=linker | FiberHMM=open": {
+    "n": 24,
+    "median_seg_len": null,
+    "median_marks_in_motif": 3.0,
+    "median_gap_to_mark_left": 3.0,
+    "median_gap_to_mark_right": 3.0
+   },
+   "fiberstate=unresolved | FiberHMM=nucleosome": {
+    "n": 17,
+    "median_seg_len": 428.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 198.0,
+    "median_gap_to_mark_right": 79.0
+   },
+   "fiberstate=footprint | FiberHMM=footprint": {
+    "n": 12,
+    "median_seg_len": 40.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 13.5,
+    "median_gap_to_mark_right": 14.0
+   },
+   "fiberstate=linker | FiberHMM=nucleosome": {
+    "n": 8,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 98.0,
+    "median_gap_to_mark_right": 16.0
+   },
+   "fiberstate=linker | FiberHMM=footprint": {
+    "n": 7,
+    "median_seg_len": null,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 11.0,
+    "median_gap_to_mark_right": 6.0
+   },
+   "fiberstate=nucleosome | FiberHMM=open": {
+    "n": 1,
+    "median_seg_len": 141.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 125.0,
+    "median_gap_to_mark_right": 3.0
+   },
+   "fiberstate=nucleosome | FiberHMM=footprint": {
+    "n": 1,
+    "median_seg_len": 104.0,
+    "median_marks_in_motif": 0.0,
+    "median_gap_to_mark_left": 16.0,
+    "median_gap_to_mark_right": 75.0
+   }
+  }
+ }
+}

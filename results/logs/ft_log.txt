@@ -1,0 +1,13 @@
+{
+ "value": 0.6,
+ "seed": 1,
+ "metrics": {
+  "nuc_precision": 0.9782802458132007,
+  "nuc_recall": 0.9409800559516289,
+  "nuc_f1": 0.9592676924492284,
+  "dyad_median_err": 5.0,
+  "false_nuc_per_10kb_island": 3.0702574652453087,
+  "false_nuc_per_10kb_bg": 0.22721884138149057,
+  "ms_per_read": 1.0725226222225122
+ }
+}

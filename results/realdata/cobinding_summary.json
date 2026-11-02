@@ -1,0 +1,74 @@
+{
+ "source": "user's run of run_calibration_and_cobinding.sh, 2026-11-01 (fiberstate 0.5.0, Fisher exact, informative pairs)",
+ "GM12878": {
+  "sites": 20721,
+  "testable_pairs": 5612,
+  "untestable_pairs": 89127,
+  "categories": {
+   "both unbound": [
+    4085,
+    0.28,
+    0.66,
+    0.4,
+    0.8
+   ],
+   "one bound": [
+    756,
+    0.1,
+    0.26,
+    0.1,
+    0.8
+   ],
+   "both bound": [
+    771,
+    0.37,
+    0.55,
+    0.3,
+    0.8
+   ]
+  },
+  "q10": [
+   0,
+   0
+  ]
+ },
+ "K562": {
+  "sites": 19269,
+  "testable_pairs": 101,
+  "untestable_pairs": 64852,
+  "categories": {
+   "both unbound": [
+    19,
+    0.04,
+    0.63,
+    0.0,
+    10.5
+   ],
+   "one bound": [
+    7,
+    0.0,
+    0.57,
+    0.0,
+    0.0
+   ],
+   "both bound": [
+    75,
+    0.14,
+    0.37,
+    0.0,
+    0.0
+   ]
+  },
+  "q10": [
+   0,
+   2
+  ]
+ },
+ "columns": [
+  "n pairs",
+  "median log OR conditioned",
+  "median log OR unconditioned",
+  "% p<0.05 conditioned",
+  "% p<0.05 unconditioned"
+ ]
+}

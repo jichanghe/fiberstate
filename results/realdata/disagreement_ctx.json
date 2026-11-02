@@ -1,0 +1,56 @@
+{
+ "both_open": {
+  "n": 1147,
+  "m6a_in_motif_dist": {
+   "0": 0,
+   "1": 8,
+   "2": 39,
+   "3": 67,
+   "4+": 1033
+  },
+  "median_flank_m6a_rate": 0.5476190476190477,
+  "fs_state": {
+   "linker": 1147,
+   "nucleosome": 0,
+   "footprint": 0
+  },
+  "median_seg_len": 0.0,
+  "median_seg_conf": 0.8496288672098642
+ },
+ "fs_only": {
+  "n": 659,
+  "m6a_in_motif_dist": {
+   "0": 0,
+   "1": 155,
+   "2": 168,
+   "3": 148,
+   "4+": 188
+  },
+  "median_flank_m6a_rate": 0.4470588235294118,
+  "fs_state": {
+   "linker": 0,
+   "nucleosome": 112,
+   "footprint": 547
+  },
+  "median_seg_len": 31.0,
+  "median_seg_conf": 0.904252468223146
+ },
+ "both_protected": {
+  "n": 259,
+  "m6a_in_motif_dist": {
+   "0": 250,
+   "1": 9,
+   "2": 0,
+   "3": 0,
+   "4+": 0
+  },
+  "median_flank_m6a_rate": 0.3106060606060606,
+  "fs_state": {
+   "linker": 0,
+   "nucleosome": 153,
+   "footprint": 106
+  },
+  "median_seg_len": 102.0,
+  "median_seg_conf": 0.947142158359694
+ }
+}

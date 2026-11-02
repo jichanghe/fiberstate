@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fiberstate"
+version = "0.5.1"
+description = "Per-molecule nucleosome and TF footprint calling for Fiber-seq, with calibrated false-call rates and co-binding tests"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Changhe Ji"}]
+requires-python = ">=3.9"
+keywords = ["Fiber-seq", "chromatin", "nucleosome", "footprinting", "single-molecule", "m6A", "HSMM"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = ["numpy>=1.22", "numba>=0.57", "pysam>=0.21", "scipy>=1.8", "threadpoolctl>=3"]
+
+[project.optional-dependencies]
+bench = ["matplotlib"]
+
+[project.scripts]
+fiberstate = "fiberstate.cli:main"
+
+[tool.setuptools]
+packages = ["fiberstate"]
+
+[tool.setuptools.package-data]
+fiberstate = ["data/*.tsv"]

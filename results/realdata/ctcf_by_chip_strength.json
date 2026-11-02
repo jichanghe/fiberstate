@@ -1,0 +1,20 @@
+{
+ "weak ChIP": {
+  "raw": 0.5440532345013477,
+  "fiberstate": 0.7499438454627134,
+  "FiberHMM": 0.717009209344115,
+  "fibertools_footprint": 0.7346417340521114
+ },
+ "medium": {
+  "raw": 0.5077290293248465,
+  "fiberstate": 0.8973630370538759,
+  "FiberHMM": 0.8833825869515799,
+  "fibertools_footprint": 0.8986133212093658
+ },
+ "strong": {
+  "raw": 0.5228176858376904,
+  "fiberstate": 0.984200954762446,
+  "FiberHMM": 0.9872982496021823,
+  "fibertools_footprint": 0.9859911343487157
+ }
+}

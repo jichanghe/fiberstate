@@ -1,0 +1,30 @@
+{
+ "back_to_back_before": 0.1698691000532239,
+ "back_to_back_after": 0.07840576403016017,
+ "n_pairs_before": 259282,
+ "n_pairs_after": 205967,
+ "repeat_before": [
+  183.0,
+  181.0
+ ],
+ "repeat_after": [
+  187.0,
+  185.0
+ ],
+ "unresolved_n": 17567,
+ "unresolved_frac_of_protected_bp": 0.16395256180858606,
+ "unresolved_len_median": 302.0,
+ "unresolved_len_q90": 483.0,
+ "unresolved_est_nucleosomes": 35306,
+ "unresolved_frac_in_peaks": 0.07229013365223454,
+ "all_dna_frac_in_peaks": 0.09989750585808471,
+ "unresolved_m6a_per_AT": 0.004643539015587049,
+ "ft_coverage_of_unresolved": 0.9451538465421513,
+ "ft_nucs_per_unresolved": 1.260203791199408,
+ "ft_frac_long_calls_in_unresolved": 0.5222242298310598,
+ "ft_long_calls_overall": 0.04785412008129783,
+ "ft_repeat": [
+  183.0,
+  187.0
+ ]
+}

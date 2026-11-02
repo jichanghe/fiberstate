@@ -1,0 +1,85 @@
+{
+ "source": "user's run of rescore_posterior.sh, 2026-10-31",
+ "sites": 462,
+ "GM12878": {
+  "auroc": {
+   "raw": 0.525,
+   "viterbi": 0.877,
+   "p07": 0.886,
+   "p05": 0.896,
+   "FiberHMM": 0.862,
+   "fibertools_footprint": 0.873
+  },
+  "unbound": {
+   "viterbi": 0.008,
+   "p07": 0.011,
+   "p05": 0.014,
+   "FiberHMM": 0.037,
+   "fibertools_footprint": 0.03
+  },
+  "bound": {
+   "viterbi": 0.15,
+   "p07": 0.188,
+   "p05": 0.211,
+   "FiberHMM": 0.238,
+   "fibertools_footprint": 0.242
+  },
+  "paired": {
+   "p05 vs FiberHMM": [
+    0.034,
+    0.00174
+   ],
+   "p05 vs fibertools": [
+    0.024,
+    0.0328
+   ],
+   "p05 vs viterbi": [
+    0.019,
+    0.0333
+   ]
+  }
+ },
+ "K562": {
+  "auroc": {
+   "raw": 0.649,
+   "viterbi": 0.822,
+   "p07": 0.865,
+   "p05": 0.888,
+   "FiberHMM": 0.883,
+   "fibertools_footprint": 0.874
+  },
+  "unbound": {
+   "viterbi": 0.008,
+   "p07": 0.012,
+   "p05": 0.015,
+   "FiberHMM": 0.031,
+   "fibertools_footprint": 0.033
+  },
+  "bound": {
+   "viterbi": 0.131,
+   "p07": 0.202,
+   "p05": 0.245,
+   "FiberHMM": 0.293,
+   "fibertools_footprint": 0.291
+  },
+  "paired": {
+   "p05 vs FiberHMM": [
+    0.005,
+    0.638
+   ],
+   "p05 vs fibertools": [
+    0.014,
+    0.18
+   ],
+   "p05 vs viterbi": [
+    0.066,
+    8.61e-09
+   ]
+  }
+ },
+ "seconds_8_threads": {
+  "GM12878_p07": 453,
+  "GM12878_p05": 714,
+  "K562_p05": 230
+ }
+}
