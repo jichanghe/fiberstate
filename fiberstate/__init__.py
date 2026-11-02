@@ -11,5 +11,5 @@ for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
            "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS"):
     _os.environ.setdefault(_v, _n)
 
-__version__ = "0.5.1"
+__version__ = "0.5.2"
 from .model import Model, Params, ReadCall  # noqa: E402,F401

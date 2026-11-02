@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.2 (2026-11-02)
+
+- Zenodo archiving metadata (`.zenodo.json`). No code changes; results are identical to 0.5.1.
+
 ## 0.5.1 (2026-11-01)
 
 - **Built-in calibration table** (`fiberstate/data/footprint_calibration.tsv`).

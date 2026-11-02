@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fiberstate"
-version = "0.5.1"
+version = "0.5.2"
 description = "Per-molecule nucleosome and TF footprint calling for Fiber-seq, with calibrated false-call rates and co-binding tests"
 readme = "README.md"
 license = {text = "MIT"}

@@ -1,0 +1,9 @@
+{
+  "title": "fiberstate: calibrated per-molecule nucleosome and transcription-factor footprint calling for Fiber-seq",
+  "upload_type": "software",
+  "description": "fiberstate labels every base of every Fiber-seq molecule as linker, nucleosome or transcription-factor footprint with a sequence-aware explicit-duration hidden semi-Markov model, calibrates footprint calls to a false-call rate, and tests co-binding of site pairs conditioned on accessibility. Includes the full benchmark against FiberHMM, fibertools-rs and HiddenFoot.",
+  "creators": [{"name": "Ji, Changhe"}],
+  "license": "mit",
+  "keywords": ["Fiber-seq", "chromatin", "nucleosome", "transcription factor footprinting", "single-molecule", "m6A", "hidden semi-Markov model"],
+  "version": "0.5.2"
+}

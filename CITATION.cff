@@ -4,6 +4,6 @@ title: "fiberstate: calibrated per-molecule nucleosome and transcription-factor 
 authors:
   - family-names: Ji
     given-names: Changhe
-version: 0.5.1
-date-released: 2026-11-01
+version: 0.5.2
+date-released: 2026-11-02
 license: MIT
