@@ -1,5 +1,7 @@
 # fiberstate
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23898099.svg)](https://doi.org/10.5281/zenodo.23898099)
+
 Per-molecule chromatin state calling for **Fiber-seq** and other m6A-footprinting long-read assays.
 
 For every base of every DNA molecule, fiberstate gives the probability that it is **open
