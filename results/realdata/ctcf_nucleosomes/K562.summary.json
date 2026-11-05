@@ -1,0 +1,77 @@
+{
+ "sites_scored": 461,
+ "molecules_without_calls": 0,
+ "by_label": {
+  "bound": {
+   "sites": 249,
+   "molecules": 8312,
+   "share": {
+    "footprinted": 0.22557747834456207,
+    "open": 0.4029114533205005,
+    "occluded": 0.37151106833493747
+   },
+   "occupancy": {
+    "footprinted": {
+     "centre_0_50": 0.012070205055117505,
+     "flank_150_250": 0.5929423998066533,
+     "far_600_1000": 0.5524892543587262,
+     "molecules_at_centre": 1876
+    },
+    "open": {
+     "centre_0_50": 0.1173389363689426,
+     "flank_150_250": 0.4910420034971411,
+     "far_600_1000": 0.47175594687652217,
+     "molecules_at_centre": 3352
+    },
+    "occluded": {
+     "centre_0_50": 0.5831171507982674,
+     "flank_150_250": 0.5172713797189615,
+     "far_600_1000": 0.4885398940346295,
+     "molecules_at_centre": 3088
+    }
+   }
+  },
+  "unbound": {
+   "sites": 212,
+   "molecules": 7091,
+   "share": {
+    "footprinted": 0.013115216471583698,
+    "open": 0.26258637709772953,
+    "occluded": 0.7242984064306868
+   },
+   "occupancy": {
+    "footprinted": {
+     "centre_0_50": 0.023634621526668797,
+     "flank_150_250": 0.5323081595268717,
+     "far_600_1000": 0.5170740331501075,
+     "molecules_at_centre": 93
+    },
+    "open": {
+     "centre_0_50": 0.3129250827796408,
+     "flank_150_250": 0.4647660640208134,
+     "far_600_1000": 0.534804982640429,
+     "molecules_at_centre": 1862
+    },
+    "occluded": {
+     "centre_0_50": 0.5716628658265149,
+     "flank_150_250": 0.5431015000316288,
+     "far_600_1000": 0.5096728997881309,
+     "molecules_at_centre": 5136
+    }
+   }
+  }
+ },
+ "bound_sites_footprinted_share_vs_chip_signal": {
+  "spearman": 0.780984870744033,
+  "p": 2.0724916503004487e-52,
+  "sites": 249
+ },
+ "flank_150_250_footprinted_minus_open_bound": {
+  "diff": 0.10201411548773792,
+  "ci95": [
+   0.0845292866870864,
+   0.11984227934171512
+  ],
+  "p_two_sided": 0.0
+ }
+}
