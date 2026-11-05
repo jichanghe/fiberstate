@@ -1,0 +1,19 @@
+
+settings chosen on CTCF_GM12878 (best site AUROC):
+  fiberstate  0.55
+  fibertools  default: patch spans window and core unmarked
+  FiberHMM    0.25
+  HiddenFoot  0.45
+
+site AUROC with tuned settings (p: paired DeLong vs fiberstate; [best possible on that set])
+set                             fiberstate                fibertools                  FiberHMM                HiddenFoot
+CTCF_GM12878 *               0.890 [0.890]      0.873 p=0.14 [0.873]    0.862 p=0.0086 [0.862]      0.881 p=0.52 [0.881]
+CTCF_K562                    0.879 [0.882]      0.874 p=0.68 [0.874]      0.884 p=0.65 [0.885]    0.826 p=0.0029 [0.834]
+REST_GM12878                 0.743 [0.743]      0.716 p=0.14 [0.716]     0.700 p=0.029 [0.704]      0.734 p=0.69 [0.744]
+REST_K562                    0.597 [0.608]      0.570 p=0.21 [0.570]      0.577 p=0.36 [0.587]     0.552 p=0.065 [0.594]
+NRF1_GM12878                 0.845 [0.858]      0.826 p=0.27 [0.826]      0.825 p=0.19 [0.826]      0.825 p=0.31 [0.846]
+NRF1_K562                    0.652 [0.683]      0.696 p=0.06 [0.696]      0.671 p=0.38 [0.671]      0.691 p=0.16 [0.693]
+  * tuning set
+held-out sets: fiberstate higher than fibertools in 4/5 (significantly higher in 0, significantly lower in 0)
+held-out sets: fiberstate higher than FiberHMM in 3/5 (significantly higher in 1, significantly lower in 0)
+held-out sets: fiberstate higher than HiddenFoot in 4/5 (significantly higher in 1, significantly lower in 0)

@@ -1,0 +1,203 @@
+{
+ "tuning_set": "CTCF_GM12878",
+ "chosen_setting": {
+  "fiberstate": "0.55",
+  "fibertools": "default: patch spans window and core unmarked",
+  "FiberHMM": "0.25",
+  "HiddenFoot": "0.45"
+ },
+ "sets": {
+  "CTCF_GM12878": {
+   "fiberstate": {
+    "auroc_tuned": 0.8897169811320754,
+    "auroc_best_on_this_set": 0.8897169811320754,
+    "false_calls": 0.018841057948595624,
+    "bound_footprinted": 0.22239237224206684
+   },
+   "fibertools": {
+    "auroc_tuned": 0.8725,
+    "auroc_best_on_this_set": 0.8725,
+    "false_calls": 0.028584699740301762,
+    "bound_footprinted": 0.23862860634140598,
+    "fiberstate_minus_auroc": 0.017216981132075482,
+    "delong_p": 0.13741880752259106
+   },
+   "FiberHMM": {
+    "auroc_tuned": 0.8622264150943396,
+    "auroc_best_on_this_set": 0.8622264150943396,
+    "false_calls": 0.03640084459638878,
+    "bound_footprinted": 0.2332494331891699,
+    "fiberstate_minus_auroc": 0.02749056603773592,
+    "delong_p": 0.008552030354583687
+   },
+   "HiddenFoot": {
+    "auroc_tuned": 0.8809716981132075,
+    "auroc_best_on_this_set": 0.8809716981132075,
+    "false_calls": 0.028720029148184303,
+    "bound_footprinted": 0.26854126359424935,
+    "fiberstate_minus_auroc": 0.0087452830188679,
+    "delong_p": 0.5165813787177373
+   }
+  },
+  "CTCF_K562": {
+   "fiberstate": {
+    "auroc_tuned": 0.8788360991134349,
+    "auroc_best_on_this_set": 0.882321739789346,
+    "false_calls": 0.011615584516933432,
+    "bound_footprinted": 0.24751167179086098
+   },
+   "fibertools": {
+    "auroc_tuned": 0.8744790482685458,
+    "auroc_best_on_this_set": 0.8744790482685458,
+    "false_calls": 0.024568995901808565,
+    "bound_footprinted": 0.287100614913326,
+    "fiberstate_minus_auroc": 0.00435705084488891,
+    "delong_p": 0.6792712390799037
+   },
+   "FiberHMM": {
+    "auroc_tuned": 0.8836762142911267,
+    "auroc_best_on_this_set": 0.8850117450935818,
+    "false_calls": 0.023342837877111645,
+    "bound_footprinted": 0.288664331019557,
+    "fiberstate_minus_auroc": -0.004840115177691895,
+    "delong_p": 0.6471249110058619
+   },
+   "HiddenFoot": {
+    "auroc_tuned": 0.8262483897855574,
+    "auroc_best_on_this_set": 0.8340342502083807,
+    "false_calls": 0.025897319473879403,
+    "bound_footprinted": 0.20677636810966932,
+    "fiberstate_minus_auroc": 0.052587709327877596,
+    "delong_p": 0.002884954106866698
+   }
+  },
+  "REST_GM12878": {
+   "fiberstate": {
+    "auroc_tuned": 0.7425185185185185,
+    "auroc_best_on_this_set": 0.7425185185185185,
+    "false_calls": 0.013184654010742848,
+    "bound_footprinted": 0.05731872230453873
+   },
+   "fibertools": {
+    "auroc_tuned": 0.7155185185185186,
+    "auroc_best_on_this_set": 0.7155185185185186,
+    "false_calls": 0.015050894334288497,
+    "bound_footprinted": 0.05794250164383924,
+    "fiberstate_minus_auroc": 0.027000000000000024,
+    "delong_p": 0.13897023756827484
+   },
+   "FiberHMM": {
+    "auroc_tuned": 0.6997037037037037,
+    "auroc_best_on_this_set": 0.7041358024691358,
+    "false_calls": 0.02684585109464179,
+    "bound_footprinted": 0.06829305268986784,
+    "fiberstate_minus_auroc": 0.04281481481481486,
+    "delong_p": 0.029077795387805475
+   },
+   "HiddenFoot": {
+    "auroc_tuned": 0.7343703703703703,
+    "auroc_best_on_this_set": 0.7441975308641975,
+    "false_calls": 0.01923172606510743,
+    "bound_footprinted": 0.07223504938331377,
+    "fiberstate_minus_auroc": 0.008148148148148238,
+    "delong_p": 0.6940334192001416
+   }
+  },
+  "REST_K562": {
+   "fiberstate": {
+    "auroc_tuned": 0.5970248756218905,
+    "auroc_best_on_this_set": 0.6080696517412936,
+    "false_calls": 0.0054313730613828335,
+    "bound_footprinted": 0.030597064899039426
+   },
+   "fibertools": {
+    "auroc_tuned": 0.5700394088669951,
+    "auroc_best_on_this_set": 0.5700394088669951,
+    "false_calls": 0.012419264350070588,
+    "bound_footprinted": 0.04204007900731152,
+    "fiberstate_minus_auroc": 0.028358208955223674,
+    "delong_p": 0.21392094084265917
+   },
+   "FiberHMM": {
+    "auroc_tuned": 0.5774726368159204,
+    "auroc_best_on_this_set": 0.5872039800995025,
+    "false_calls": 0.013794058207786371,
+    "bound_footprinted": 0.041889707277571644,
+    "fiberstate_minus_auroc": 0.019552238805970013,
+    "delong_p": 0.3649078277933169
+   },
+   "HiddenFoot": {
+    "auroc_tuned": 0.5522660098522167,
+    "auroc_best_on_this_set": 0.5935073891625616,
+    "false_calls": 0.02167198450741485,
+    "bound_footprinted": 0.05626896337198763,
+    "fiberstate_minus_auroc": 0.046507462686567025,
+    "delong_p": 0.0651490113968741
+   }
+  },
+  "NRF1_GM12878": {
+   "fiberstate": {
+    "auroc_tuned": 0.8450322580645161,
+    "auroc_best_on_this_set": 0.8584435483870968,
+    "false_calls": 0.01770939226161924,
+    "bound_footprinted": 0.13704153077950526
+   },
+   "fibertools": {
+    "auroc_tuned": 0.8255403225806451,
+    "auroc_best_on_this_set": 0.8255403225806451,
+    "false_calls": 0.051290740070298976,
+    "bound_footprinted": 0.24891663565157038,
+    "fiberstate_minus_auroc": 0.01949193548387096,
+    "delong_p": 0.27312610190556397
+   },
+   "FiberHMM": {
+    "auroc_tuned": 0.8253306451612903,
+    "auroc_best_on_this_set": 0.8262903225806452,
+    "false_calls": 0.0389892489700244,
+    "bound_footprinted": 0.17068163278733658,
+    "fiberstate_minus_auroc": 0.019701612903225807,
+    "delong_p": 0.1909069520547421
+   },
+   "HiddenFoot": {
+    "auroc_tuned": 0.824741935483871,
+    "auroc_best_on_this_set": 0.8464354838709678,
+    "false_calls": 0.0552142514593055,
+    "bound_footprinted": 0.29278114255979504,
+    "fiberstate_minus_auroc": 0.020290322580645115,
+    "delong_p": 0.3073529740960522
+   }
+  },
+  "NRF1_K562": {
+   "fiberstate": {
+    "auroc_tuned": 0.6519591836734694,
+    "auroc_best_on_this_set": 0.6828571428571428,
+    "false_calls": 0.006983290892869122,
+    "bound_footprinted": 0.051048549179432474
+   },
+   "fibertools": {
+    "auroc_tuned": 0.6957959183673469,
+    "auroc_best_on_this_set": 0.6957959183673469,
+    "false_calls": 0.03284926363652458,
+    "bound_footprinted": 0.14020643637928742,
+    "fiberstate_minus_auroc": -0.04383673469387761,
+    "delong_p": 0.059624215657400795
+   },
+   "FiberHMM": {
+    "auroc_tuned": 0.6705387755102041,
+    "auroc_best_on_this_set": 0.6712816326530612,
+    "false_calls": 0.021141445163324377,
+    "bound_footprinted": 0.09190950533347167,
+    "fiberstate_minus_auroc": -0.018579591836734632,
+    "delong_p": 0.3774912046952334
+   },
+   "HiddenFoot": {
+    "auroc_tuned": 0.6906612244897959,
+    "auroc_best_on_this_set": 0.6932489795918367,
+    "false_calls": 0.0476226340805073,
+    "bound_footprinted": 0.18069491255107117,
+    "fiberstate_minus_auroc": -0.038702040816326444,
+    "delong_p": 0.155625559458672
+   }
+  }
+ }
+}
